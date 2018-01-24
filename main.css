@@ -1,0 +1,94 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+*, input {
+    font-family: calibri;
+}
+
+#view {
+}
+
+#input-box {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 30vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background: #333333;
+    color: rgba(255, 255, 255, 0.675);
+}
+
+.input-wrapper {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.input-wrapper:first-of-type {
+    margin-top: 3rem;
+}
+
+.input-wrapper:last-of-type{
+    margin-bottom: 8rem;
+}
+
+.input-wrapper div {
+    display: flex;
+    margin: 2.5px 0;
+    justify-content: space-between;
+}
+
+input {
+    /* margin: 2.5px; */
+    /* background: #CCC; */
+}
+
+#display-box {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 70vw;
+    background: #222222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#display {
+    width: 75%;
+    height: 75%;
+    border: 5px solid white;
+    position: relative;
+    /* display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center; */
+}
+
+#display div {
+    height: 50%;
+    width: 50%;
+    border-radius: 100%;
+    position: absolute;
+}
+
+#color1 {
+    top: 25%;
+    left: 10%;
+}
+
+#color2 {
+    top: 10%;
+    right: 10%;
+}
+
+#color3 {
+    right: 10%;
+    bottom: 10%;
+}

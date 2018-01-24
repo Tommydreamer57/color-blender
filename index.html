@@ -1,16 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="colorBlender">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Color Blender</title>
+
+    <link rel="stylesheet" href="/main.css">
+
 </head>
+
 <body>
 
-    <ui-view>
-        
-    </ui-view>
-    
+
+    <div id="view" ng-controller="colorCtrl">
+        <div id="input-box">
+            <div class="input-wrapper">
+                <h3>Base Color</h3>
+                <div>
+                    <input type="color" ng-model="base" />
+                    <input type="text" ng-model="base" />
+                </div>
+            </div>
+
+            <div class="input-wrapper">
+                <h3>Color One</h3>
+                <div>
+                    <input type="color" ng-model="color1" />
+                    <input type="text" ng-model="color1" />
+                </div>
+                <div>
+                    Opacity&nbsp;
+                    <input type="number" min="0" max="1" step="0.01" ng-model="opacity1" />
+                </div>
+            </div>
+
+            <div class="input-wrapper">
+                <h3>Color Two</h3>
+                <div>
+                    <input type="color" ng-model="color2" />
+                    <input type="text" ng-model="color2" />
+                </div>
+                <div>
+                    Opacity&nbsp;
+                    <input type="number" min="0" max="1" step="0.01" ng-model="opacity2" />
+                </div>
+            </div>
+
+            <div class="input-wrapper">
+                <h3>Color Three</h3>
+                <div>
+                    <input type="color" ng-model="color3" />
+                    <input type="text" ng-model="color3" />
+                </div>
+                <div>
+                    Opacity&nbsp;
+                    <input type="number" min="0" max="1" step="0.01" ng-model="opacity3" />
+                </div>
+            </div>
+        </div>
+        <div id="display-box">
+            <div id="display" style="background: {{base}}">
+                <div id="color1" style="background: {{color1}}; opacity: {{opacity1}}"></div>
+                <div id="color2" style="background: {{color2}}; opacity: {{opacity2}}"></div>
+                <div id="color3" style="background: {{color3}}; opacity: {{opacity3}}"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js" charset="utf-8"></script>
+    <script src="/App.js"></script>
+
 </body>
+
 </html>
