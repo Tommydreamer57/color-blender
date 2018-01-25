@@ -50,10 +50,10 @@ input {
 
 #display-box {
     position: fixed;
-    right: 0;
+    left: 30vw;
     top: 0;
     bottom: 0;
-    width: 70vw;
+    width: 40vw;
     background: #222222;
     display: flex;
     justify-content: center;
@@ -71,24 +71,46 @@ input {
     align-items: center; */
 }
 
-#display div {
+.color {
     height: 50%;
-    width: 50%;
+    width: 75%;
     border-radius: 100%;
     position: absolute;
 }
 
 #color1 {
-    top: 25%;
-    left: 10%;
+    top: 10%;
+    left: 12.5%;
+    z-index: 3
 }
 
 #color2 {
-    top: 10%;
-    right: 10%;
+    bottom: 10%;
+    left: 12.5%;
+    z-index: 2;
 }
 
+/* 
 #color3 {
     right: 10%;
     bottom: 10%;
+    z-index: 1;
+}
+*/
+
+#results-box {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    top: 0;
+    width: 30vw;
+    background: #2C2C2C;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+}
+
+.result {
+    display: flex;
+    margin-left: 10%;
 }
