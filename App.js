@@ -1,6 +1,8 @@
 angular.module('colorBlender', [])
 
-angular.module('colorBlender').controller('colorCtrl', function ($scope) {    
+angular.module('colorBlender').controller('colorCtrl', function ($scope) {
+
+    $scope.selection = []
     
     $scope.calculateResults = function () {
         let { base, color1, color2, color3, opacity1, opacity2, opacity3 } = $scope
@@ -12,7 +14,40 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
         console.log($scope.result1, $scope.result12, $scope.result2)
     }
 
-
+    $scope.selectResult = function (number) {
+        if ($scope.selection.includes(number)) $scope.selection = $scope.selection.filter(n => n !== number)
+        else $scope.selection.push(number)
+        if ($scope.selection.length >= 2) {
+            let oldNumber = $scope.selection.shift()
+            let oldElement = document.getElementById(`result${oldNumber}`)
+            let oldColor = oldElement.children[0]
+            let oldText = oldElement.children[1]
+            if (oldColor.disabled === false || oldText.disabled === false) {
+                console.log('setting disabled = true ', number)
+                oldColor.setAttribute('disabled', true)
+                oldText.setAttribute('disabled', true)
+            }
+            else {
+                console.log('removing disabled ', number)
+                oldColor.removeAttribute('disabled')
+                oldText.removeAttribute('disabled')
+            }
+        }
+            
+        let element = document.getElementById(`result${number}`)
+        let color = element.children[0]
+        let text = element.children[1]
+        if (color.disabled === false || text.disabled === false) {
+            console.log('setting disabled = true ', number)
+            color.setAttribute('disabled', true)
+            text.setAttribute('disabled', true)
+        }
+        else {
+            console.log('removing disabled ', number)
+            color.removeAttribute('disabled')
+            text.removeAttribute('disabled')
+        }
+    }
 
 
 

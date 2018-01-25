@@ -27,7 +27,7 @@
             <div class="input-wrapper">
                 <h3>Color One</h3>
                 <div>
-                    <input ng-change="calculateResults()" type="color" ng-model="color1" ng-init="color1='#00FF00'" />
+                    <input ng-change="calculateResults()" type="color" ng-model="color1" ng-init="color1='#00FFFF'" />
                     <input ng-change="calculateResults()" type="text" ng-model="color1" style="border: 3px solid {{color1}}" />
                 </div>
                 <div>
@@ -74,9 +74,9 @@
 
 
         <div id="results-box">
-            <div class="input-wrapper">
+            <div class="{{selection.includes(1) ? 'input-wrapper selected' : 'input-wrapper'}}" ng-click="selectResult(1)">
                 <h3>Base + Color One</h3>
-                <div>
+                <div id="result1" ng-click="$event.stopPropagation()">
                     <input ng-change="" type="color" ng-model="result1" ng-init="calculateResults()" />
                     <input ng-change="" type="text" ng-model="result1" style="background: {{result1}}" />
                 </div>
@@ -84,9 +84,9 @@
                 <span style="background: {{color1}}">{{color1}}</span> at {{opacity1}} =>
                 <span style="background: {{result1}}">{{result1}}</span> -->
             </div>
-            <div class="input-wrapper">
+            <div class="{{selection.includes(12) ? 'input-wrapper selected' : 'input-wrapper'}}" ng-click="selectResult(12)">
                 <h3>Base + Color Two + One</h3>
-                <div>
+                <div id="result12" ng-click="$event.stopPropagation()">
                     <input ng-change="" type="color" ng-model="result12" ng-init="" />
                     <input ng-change="" type="text" ng-model="result12" style="background: {{result12}}" />
                 </div>
@@ -95,9 +95,9 @@
                 <span style="background: {{color2}}">{{color2}}</span> at {{opacity2}} =>
                 <span style="background: {{result12}}">{{result12}}</span> -->
             </div>
-            <div class="input-wrapper">
+            <div class="{{selection.includes(2) ? 'input-wrapper selected' : 'input-wrapper'}}" ng-click="selectResult(2)">
                 <h3>Base + Color Two</h3>
-                <div>
+                <div id="result2" ng-click="$event.stopPropagation()">
                     <input ng-change="" type="color" ng-model="result2" ng-init="" />
                     <input ng-change="" type="text" ng-model="result2" style="background: {{result2}}" />
                 </div>

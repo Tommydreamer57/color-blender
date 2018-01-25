@@ -8,6 +8,7 @@ html, body {
 }
 
 #view {
+
 }
 
 #input-box {
@@ -27,6 +28,7 @@ html, body {
     display: flex;
     flex-flow: column nowrap;
     color: rgba(255, 255, 255, 0.675);
+    padding: 0 1rem 1rem;
 }
 
 .input-wrapper:first-of-type {
@@ -46,6 +48,12 @@ html, body {
 input {
     /* margin: 2.5px; */
     /* background: #CCC; */
+}
+
+.selected {
+    border: 2px solid black;
+    background: #3B3B3B;
+    /* #282828; */
 }
 
 #display-box {
@@ -109,9 +117,4 @@ input {
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-}
-
-.result {
-    display: flex;
-    margin-left: 10%;
 }
