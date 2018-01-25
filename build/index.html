@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Color Blender</title>
 
+    <link rel="stylesheet" href="/main.css">
+
 </head>
 
 <body>
@@ -132,6 +134,7 @@ input {
 
     </style>
 
+
     <div id="view" ng-controller="colorCtrl">
         <div id="input-box">
             <div class="input-wrapper">
@@ -236,6 +239,7 @@ input {
                 $scope.calculateResults = function () {
                     let { base, color1, color2, color3, opacity1, opacity2, opacity3 } = $scope
                     console.log('calculating results')
+                    console.log(opacity1, opacity2)
                     $scope.result1 = colorBlender(base, color1, opacity1)
                     $scope.result2 = colorBlender(base, color2, opacity2)
                     $scope.result12 = colorBlender($scope.result2, color1, opacity1)
@@ -285,8 +289,7 @@ input {
 
                     }
                     else if (color[0] === 'r') {
-                        color = color.slice(color.indexOf('(') + 1, color.length - 1).split(',').map(c => Number(c.trim()))
-
+                        color = color.slice(color.indexOf('(') + 1, color.length - 1).split(',').map(c => parseInt(c.trim(), 10))
                     }
                     else return 'Must input hexadecimal or rgb color'
                     return color
@@ -300,11 +303,47 @@ input {
                 }
 
 
+                function rgbToHexadecimal(color) {
+                    if (!Array.isArray(color)) color = colorToArray(color)
+                    let hexadecimal = {
+                        0: 0,
+                        1: 1,
+                        2: 2,
+                        3: 3,
+                        4: 4,
+                        5: 5,
+                        6: 6,
+                        7: 7,
+                        8: 8,
+                        9: 9,
+                        10: 'A',
+                        11: 'B',
+                        12: 'C',
+                        13: 'D',
+                        14: 'E',
+                        15: 'F'
+                    }
+
+                    let toHex = c => {
+                        if (c % 16 === 0) return `${hexadecimal[c / 16]}0`
+                        else return `${hexadecimal[Math.floor(c / 16)]}${hexadecimal[c % 16]}`
+                    }
+
+                    let r = toHex(color[0])
+                    let g = toHex(color[1])
+                    let b = toHex(color[2])
+
+                    return `#${r}${g}${b}`
+
+                }
+
 
                 function colorBlender(base, color, opacity) {
 
                     if (!Array.isArray(base)) base = colorToArray(base)
                     if (!Array.isArray(color)) color = colorToArray(color)
+
+                    console.log(base, color, opacity)
 
                     if (base[3] !== undefined && base[3] !== 1) return 'Base color must be opaque. If using rgba(), specify \'1\' as the alpha value'
                     if (opacity !== undefined && color[3] !== undefined) return 'Define transparency either through using rgba() or specifying the opacity parameter, not both'
@@ -313,7 +352,6 @@ input {
                     if (!opacity) return 'Must specify opacity'
                     if (opacity >= 1) return 'Opacity/alpha must be less than one'
 
-                    console.log(base, color, opacity)
 
                     let blend = c => (base[c] * (1 - opacity) + color[c] * opacity).toFixed(0)
 
@@ -323,7 +361,7 @@ input {
 
                     let result = [r, g, b]
 
-                    return arrayToColor(result)
+                    return rgbToHexadecimal(result)
 
                 }
 
@@ -350,7 +388,7 @@ input {
 
                     if (color.reduce((a, b) => a || (b < 0 || b > 255), false)) return 'Result not possible with given base & opacity'
 
-                    return arrayToColor(color)
+                    return rgbToHexadecimal(color)
 
                 }
 
@@ -379,7 +417,7 @@ input {
 
                     if (base.reduce((a, b) => a || (b < 0 || b > 255), false)) return 'Result not possible with given color & opacity'
 
-                    return arrayToColor(base)
+                    return rgbToHexadecimal(base)
 
                 }
 

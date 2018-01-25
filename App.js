@@ -5,6 +5,7 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
     $scope.calculateResults = function () {
         let { base, color1, color2, color3, opacity1, opacity2, opacity3 } = $scope
         console.log('calculating results')
+        console.log(opacity1, opacity2)
         $scope.result1 = colorBlender(base, color1, opacity1)
         $scope.result2 = colorBlender(base, color2, opacity2)
         $scope.result12 = colorBlender($scope.result2, color1, opacity1)
@@ -54,8 +55,7 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
 
         }
         else if (color[0] === 'r') {
-            color = color.slice(color.indexOf('(') + 1, color.length - 1).split(',').map(c => Number(c.trim()))
-
+            color = color.slice(color.indexOf('(') + 1, color.length - 1).split(',').map(c => parseInt(c.trim(), 10))
         }
         else return 'Must input hexadecimal or rgb color'
         return color
@@ -103,11 +103,13 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
 
     }
 
-
+    
     function colorBlender(base, color, opacity) {
-
+        
         if (!Array.isArray(base)) base = colorToArray(base)
         if (!Array.isArray(color)) color = colorToArray(color)
+        
+        console.log(base, color, opacity)
 
         if (base[3] !== undefined && base[3] !== 1) return 'Base color must be opaque. If using rgba(), specify \'1\' as the alpha value'
         if (opacity !== undefined && color[3] !== undefined) return 'Define transparency either through using rgba() or specifying the opacity parameter, not both'
@@ -116,7 +118,6 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
         if (!opacity) return 'Must specify opacity'
         if (opacity >= 1) return 'Opacity/alpha must be less than one'
 
-        console.log(base, color, opacity)
 
         let blend = c => (base[c] * (1 - opacity) + color[c] * opacity).toFixed(0)
 
