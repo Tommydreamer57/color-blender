@@ -18,7 +18,7 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
         let { base, opacity1, opacity2, opacity3, result1, result12, result2 } = $scope
         $scope.color1 = colorFinder(result1, base, opacity1)
         $scope.color2 = colorFinder(result2, base, opacity2)
-        $scope.result12 = colorBlender($scope.result2, color1, opacity1)
+        $scope.result12 = colorBlender(result2, $scope.color1, opacity1)
     }
 
     
