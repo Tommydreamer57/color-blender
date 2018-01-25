@@ -24,6 +24,7 @@
 }
 
 #view {
+
 }
 
 #input-box {
@@ -43,6 +44,7 @@
     display: flex;
     flex-flow: column nowrap;
     color: rgba(255, 255, 255, 0.675);
+    padding: 0 1rem 1rem;
 }
 
 .input-wrapper:first-of-type {
@@ -62,6 +64,12 @@
 input {
     /* margin: 2.5px; */
     /* background: #CCC; */
+}
+
+.selected {
+    border: 2px solid black;
+    background: #3B3B3B;
+    /* #282828; */
 }
 
 #display-box {
@@ -127,11 +135,6 @@ input {
     align-items: center;
 }
 
-.result {
-    display: flex;
-    margin-left: 10%;
-}
-
     </style>
 
 
@@ -148,7 +151,7 @@ input {
             <div class="input-wrapper">
                 <h3>Color One</h3>
                 <div>
-                    <input ng-change="calculateResults()" type="color" ng-model="color1" ng-init="color1='#00FF00'" />
+                    <input ng-change="calculateResults()" type="color" ng-model="color1" ng-init="color1='#00FFFF'" />
                     <input ng-change="calculateResults()" type="text" ng-model="color1" style="border: 3px solid {{color1}}" />
                 </div>
                 <div>
@@ -195,32 +198,32 @@ input {
 
 
         <div id="results-box">
-            <div class="input-wrapper">
+            <div class="{{selection.includes(1) ? 'input-wrapper selected' : 'input-wrapper'}}" ng-click="selectResult(1)">
                 <h3>Base + Color One</h3>
-                <div>
-                    <input ng-change="" type="color" ng-model="result1" ng-init="calculateResults()" />
-                    <input ng-change="" type="text" ng-model="result1" style="background: {{result1}}" />
+                <div id="result1" ng-click="$event.stopPropagation()">
+                    <input ng-change="calculateColor()" type="color" ng-model="result1" ng-init="calculateResults()" />
+                    <input ng-change="calculateColor()" type="text" ng-model="result1" style="background: {{result1}}" />
                 </div>
                 <!-- {{base}} +
                 <span style="background: {{color1}}">{{color1}}</span> at {{opacity1}} =>
                 <span style="background: {{result1}}">{{result1}}</span> -->
             </div>
-            <div class="input-wrapper">
+            <div class="{{selection.includes(12) ? 'input-wrapper selected' : 'input-wrapper'}}" ng-click="selectResult(12)">
                 <h3>Base + Color Two + One</h3>
-                <div>
-                    <input ng-change="" type="color" ng-model="result12" ng-init="" />
-                    <input ng-change="" type="text" ng-model="result12" style="background: {{result12}}" />
+                <div id="result12" ng-click="$event.stopPropagation()">
+                    <input ng-change="calculateColor()" type="color" ng-model="result12" ng-init="" />
+                    <input ng-change="calculateColor()" type="text" ng-model="result12" style="background: {{result12}}" />
                 </div>
                 <!-- {{base}} +
                 <span style="background: {{color1}}">{{color1}}</span> at {{opacity1}} +
                 <span style="background: {{color2}}">{{color2}}</span> at {{opacity2}} =>
                 <span style="background: {{result12}}">{{result12}}</span> -->
             </div>
-            <div class="input-wrapper">
+            <div class="{{selection.includes(2) ? 'input-wrapper selected' : 'input-wrapper'}}" ng-click="selectResult(2)">
                 <h3>Base + Color Two</h3>
-                <div>
-                    <input ng-change="" type="color" ng-model="result2" ng-init="" />
-                    <input ng-change="" type="text" ng-model="result2" style="background: {{result2}}" />
+                <div id="result2" ng-click="$event.stopPropagation()">
+                    <input ng-change="calculateColor()" type="color" ng-model="result2" ng-init="" />
+                    <input ng-change="calculateColor()" type="text" ng-model="result2" style="background: {{result2}}" />
                 </div>
                 <!-- {{base}} +
                 <span style="background: {{color2}}">{{color2}}</span> at {{opacity2}} =>
@@ -236,6 +239,8 @@ input {
 
             angular.module('colorBlender').controller('colorCtrl', function ($scope) {
 
+                $scope.selection = []
+
                 $scope.calculateResults = function () {
                     let { base, color1, color2, color3, opacity1, opacity2, opacity3 } = $scope
                     console.log('calculating results')
@@ -245,6 +250,55 @@ input {
                     $scope.result12 = colorBlender($scope.result2, color1, opacity1)
                     console.log($scope.result1, $scope.result12, $scope.result2)
                 }
+
+                $scope.calculateColor = function () {
+                    let { base, opacity1, opacity2, opacity3, result1, result12, result2 } = $scope
+                    $scope.color1 = colorFinder(result1, base, opacity1)
+                    $scope.color2 = colorFinder(result2, base, opacity2)
+                    $scope.result12 = colorBlender($scope.result2, color1, opacity1)
+                }
+
+
+
+                $scope.selectResult = function (number) {
+                    if ($scope.selection.includes(number)) $scope.selection = $scope.selection.filter(n => n !== number)
+                    else $scope.selection.push(number)
+                    if ($scope.selection.length >= 2) {
+                        let oldNumber = $scope.selection.shift()
+                        let oldElement = document.getElementById(`result${oldNumber}`)
+                        let oldColor = oldElement.children[0]
+                        let oldText = oldElement.children[1]
+                        if (oldColor.disabled === false || oldText.disabled === false) {
+                            console.log('setting disabled = true ', number)
+                            oldColor.setAttribute('disabled', true)
+                            oldText.setAttribute('disabled', true)
+                        }
+                        else {
+                            console.log('removing disabled ', number)
+                            oldColor.removeAttribute('disabled')
+                            oldText.removeAttribute('disabled')
+                        }
+                    }
+
+                    let element = document.getElementById(`result${number}`)
+                    let color = element.children[0]
+                    let text = element.children[1]
+                    if (color.disabled === false || text.disabled === false) {
+                        console.log('setting disabled = true ', number)
+                        color.setAttribute('disabled', true)
+                        text.setAttribute('disabled', true)
+                    }
+                    else {
+                        console.log('removing disabled ', number)
+                        color.removeAttribute('disabled')
+                        text.removeAttribute('disabled')
+                    }
+                }
+
+
+
+
+
 
 
 
