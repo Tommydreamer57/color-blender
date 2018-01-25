@@ -52,6 +52,40 @@ function arrayToColor(color) {
     if (color.length === 3) return `rgb(${color[0]}, ${color[1]}, ${color[2]})`
 }
 
+function rgbToHexadecimal(color) {
+    if (!Array.isArray(color)) color = colorToArray(color)
+    let hexadecimal = {
+        0: 0,
+        1: 1,
+        2: 2,
+        3: 3,
+        4: 4,
+        5: 5,
+        6: 6,
+        7: 7,
+        8: 8,
+        9: 9,
+        10: 'A',
+        11: 'B',
+        12: 'C',
+        13: 'D',
+        14: 'E',
+        15: 'F'
+    }
+
+    let toHex = c => {
+        if (c % 16 === 0) return `${hexadecimal[c / 16]}`.repeat(2)
+        else return `${hexadecimal[Math.floor(c / 16)]}${hexadecimal[c % 16]}`
+    }
+
+    let r = toHex(color[0])
+    let g = toHex(color[1])
+    let b = toHex(color[2])
+
+    return `#${r}${g}${b}`
+
+}
+
 
 
 function colorBlender(base, color, opacity) {
