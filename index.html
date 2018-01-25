@@ -77,8 +77,8 @@
             <div class="{{selection.includes(1) ? 'input-wrapper selected' : 'input-wrapper'}}" ng-click="selectResult(1)">
                 <h3>Base + Color One</h3>
                 <div id="result1" ng-click="$event.stopPropagation()">
-                    <input ng-change="" type="color" ng-model="result1" ng-init="calculateResults()" />
-                    <input ng-change="" type="text" ng-model="result1" style="background: {{result1}}" />
+                    <input ng-change="calculateColor()" type="color" ng-model="result1" ng-init="calculateResults()" />
+                    <input ng-change="calculateColor()" type="text" ng-model="result1" style="background: {{result1}}" />
                 </div>
                 <!-- {{base}} +
                 <span style="background: {{color1}}">{{color1}}</span> at {{opacity1}} =>
@@ -87,8 +87,8 @@
             <div class="{{selection.includes(12) ? 'input-wrapper selected' : 'input-wrapper'}}" ng-click="selectResult(12)">
                 <h3>Base + Color Two + One</h3>
                 <div id="result12" ng-click="$event.stopPropagation()">
-                    <input ng-change="" type="color" ng-model="result12" ng-init="" />
-                    <input ng-change="" type="text" ng-model="result12" style="background: {{result12}}" />
+                    <input ng-change="calculateColor()" type="color" ng-model="result12" ng-init="" />
+                    <input ng-change="calculateColor()" type="text" ng-model="result12" style="background: {{result12}}" />
                 </div>
                 <!-- {{base}} +
                 <span style="background: {{color1}}">{{color1}}</span> at {{opacity1}} +
@@ -98,8 +98,8 @@
             <div class="{{selection.includes(2) ? 'input-wrapper selected' : 'input-wrapper'}}" ng-click="selectResult(2)">
                 <h3>Base + Color Two</h3>
                 <div id="result2" ng-click="$event.stopPropagation()">
-                    <input ng-change="" type="color" ng-model="result2" ng-init="" />
-                    <input ng-change="" type="text" ng-model="result2" style="background: {{result2}}" />
+                    <input ng-change="calculateColor()" type="color" ng-model="result2" ng-init="" />
+                    <input ng-change="calculateColor()" type="text" ng-model="result2" style="background: {{result2}}" />
                 </div>
                 <!-- {{base}} +
                 <span style="background: {{color2}}">{{color2}}</span> at {{opacity2}} =>

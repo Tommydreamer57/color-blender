@@ -14,6 +14,15 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
         console.log($scope.result1, $scope.result12, $scope.result2)
     }
 
+    $scope.calculateColor = function () {
+        let { base, opacity1, opacity2, opacity3, result1, result12, result2 } = $scope
+        $scope.color1 = colorFinder(result1, base, opacity1)
+        $scope.color2 = colorFinder(result2, base, opacity2)
+        $scope.result12 = colorBlender($scope.result2, color1, opacity1)
+    }
+
+    
+
     $scope.selectResult = function (number) {
         if ($scope.selection.includes(number)) $scope.selection = $scope.selection.filter(n => n !== number)
         else $scope.selection.push(number)
@@ -48,6 +57,13 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
             text.removeAttribute('disabled')
         }
     }
+
+
+
+
+
+
+
 
 
 
