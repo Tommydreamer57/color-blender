@@ -20,7 +20,7 @@
                 <h3>Base Color</h3>
                 <div>
                     <input ng-change="calculateResults()" type="color" ng-model="base" ng-init="base='#FFFFFF'" />
-                    <input ng-change="calculateResults()" type="text" ng-model="base" />
+                    <input ng-change="calculateResults()" type="text" ng-model="base" style="border: 3px solid {{base}}" />
                 </div>
             </div>
 
@@ -28,11 +28,12 @@
                 <h3>Color One</h3>
                 <div>
                     <input ng-change="calculateResults()" type="color" ng-model="color1" ng-init="color1='#00FF00'" />
-                    <input ng-change="calculateResults()" type="text" ng-model="color1" />
+                    <input ng-change="calculateResults()" type="text" ng-model="color1" style="border: 3px solid {{color1}}" />
                 </div>
                 <div>
                     Opacity&nbsp;
-                    <input ng-change="calculateResults()" type="number" min="0" max="1" step="0.01" ng-model="opacity1" ng-init="opacity1=0.5" />
+                    <input ng-change="calculateResults()" type="number" min="0" max="1" step="0.01" ng-model="opacity1" ng-init="opacity1=0.5"
+                    />
                 </div>
             </div>
 
@@ -40,16 +41,13 @@
                 <h3>Color Two</h3>
                 <div>
                     <input ng-change="calculateResults()" type="color" ng-model="color2" ng-init="color2='#0000FF'" />
-                    <input ng-change="calculateResults()" type="text" ng-model="color2" />
+                    <input ng-change="calculateResults()" type="text" ng-model="color2" style="border: 3px solid {{color2}}" />
                 </div>
                 <div>
                     Opacity&nbsp;
-                    <input ng-change="calculateResults()" type="number" min="0" max="1" step="0.01" ng-model="opacity2" ng-init="opacity2=0.5" />
+                    <input ng-change="calculateResults()" type="number" min="0" max="1" step="0.01" ng-model="opacity2" ng-init="opacity2=0.5"
+                    />
                 </div>
-            </div>
-
-            <div class="input-wrapper">
-                <button ng-click="calculateResults()">Calculate Results</button>
             </div>
 
             <!-- <div class="input-wrapper">
@@ -64,6 +62,8 @@
                 </div>
             </div> -->
         </div>
+
+
         <div id="display-box">
             <div id="display" style="background: {{base}}">
                 <div class="color" id="color1" style="background: {{color1}}; opacity: {{opacity1}}"></div>
@@ -71,22 +71,39 @@
                 <!-- <div class="color" id="color3" style="background: {{color3}}; opacity: {{opacity3}}"></div> -->
             </div>
         </div>
+
+
         <div id="results-box">
             <div class="input-wrapper">
-                {{base}} +
+                <h3>Base + Color One</h3>
+                <div>
+                    <input ng-change="" type="color" ng-model="result1" ng-init="calculateResults()" />
+                    <input ng-change="" type="text" ng-model="result1" style="background: {{result1}}" />
+                </div>
+                <!-- {{base}} +
                 <span style="background: {{color1}}">{{color1}}</span> at {{opacity1}} =>
-                <span style="background: {{result1}}">{{result1}}</span>
+                <span style="background: {{result1}}">{{result1}}</span> -->
             </div>
             <div class="input-wrapper">
-                {{base}} +
+                <h3>Base + Color Two + One</h3>
+                <div>
+                    <input ng-change="" type="color" ng-model="result12" ng-init="" />
+                    <input ng-change="" type="text" ng-model="result12" style="background: {{result12}}" />
+                </div>
+                <!-- {{base}} +
                 <span style="background: {{color1}}">{{color1}}</span> at {{opacity1}} +
                 <span style="background: {{color2}}">{{color2}}</span> at {{opacity2}} =>
-                <span style="background: {{result12}}">{{result12}}</span>
+                <span style="background: {{result12}}">{{result12}}</span> -->
             </div>
             <div class="input-wrapper">
-                {{base}} +
+                <h3>Base + Color Two</h3>
+                <div>
+                    <input ng-change="" type="color" ng-model="result2" ng-init="" />
+                    <input ng-change="" type="text" ng-model="result2" style="background: {{result2}}" />
+                </div>
+                <!-- {{base}} +
                 <span style="background: {{color2}}">{{color2}}</span> at {{opacity2}} =>
-                <span style="background: {{result2}}">{{result2}}</span>
+                <span style="background: {{result2}}">{{result2}}</span> -->
             </div>
         </div>
     </div>
