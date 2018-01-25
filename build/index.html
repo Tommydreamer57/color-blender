@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="colorBlender">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Color Blender</title>
+
+</head>
+
+<body>
+
+    <style>
+        html, body {
+    margin: 0;
+    padding: 0;
+}
+
+*, input {
+    font-family: calibri;
+}
+
+#view {
+}
+
+#input-box {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 30vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background: #333333;
+}
+
+.input-wrapper {
+    display: flex;
+    flex-flow: column nowrap;
+    color: rgba(255, 255, 255, 0.675);
+}
+
+.input-wrapper:first-of-type {
+    margin-top: 3rem;
+}
+
+.input-wrapper:last-of-type{
+    margin-bottom: 8rem;
+}
+
+.input-wrapper div {
+    display: flex;
+    margin: 2.5px 0;
+    justify-content: space-between;
+}
+
+input {
+    /* margin: 2.5px; */
+    /* background: #CCC; */
+}
+
+#display-box {
+    position: fixed;
+    left: 30vw;
+    top: 0;
+    bottom: 0;
+    width: 40vw;
+    background: #222222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#display {
+    width: 75%;
+    height: 85%;
+    border: 5px solid white;
+    position: relative;
+    /* display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center; */
+}
+
+.color {
+    height: 50%;
+    width: 75%;
+    border-radius: 100%;
+    position: absolute;
+}
+
+#color1 {
+    top: 10%;
+    left: 12.5%;
+    z-index: 3
+}
+
+#color2 {
+    bottom: 10%;
+    left: 12.5%;
+    z-index: 2;
+}
+
+/* 
+#color3 {
+    right: 10%;
+    bottom: 10%;
+    z-index: 1;
+}
+*/
+
+#results-box {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    top: 0;
+    width: 30vw;
+    background: #2C2C2C;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.result {
+    display: flex;
+    margin-left: 10%;
+}
+
+    </style>
+
+    <div id="view" ng-controller="colorCtrl">
+        <div id="input-box">
+            <div class="input-wrapper">
+                <h3>Base Color</h3>
+                <div>
+                    <input ng-change="calculateResults()" type="color" ng-model="base" ng-init="base='#FFFFFF'" />
+                    <input ng-change="calculateResults()" type="text" ng-model="base" style="border: 3px solid {{base}}" />
+                </div>
+            </div>
+
+            <div class="input-wrapper">
+                <h3>Color One</h3>
+                <div>
+                    <input ng-change="calculateResults()" type="color" ng-model="color1" ng-init="color1='#00FF00'" />
+                    <input ng-change="calculateResults()" type="text" ng-model="color1" style="border: 3px solid {{color1}}" />
+                </div>
+                <div>
+                    Opacity&nbsp;
+                    <input ng-change="calculateResults()" type="number" min="0" max="1" step="0.01" ng-model="opacity1" ng-init="opacity1=0.5"
+                    />
+                </div>
+            </div>
+
+            <div class="input-wrapper">
+                <h3>Color Two</h3>
+                <div>
+                    <input ng-change="calculateResults()" type="color" ng-model="color2" ng-init="color2='#0000FF'" />
+                    <input ng-change="calculateResults()" type="text" ng-model="color2" style="border: 3px solid {{color2}}" />
+                </div>
+                <div>
+                    Opacity&nbsp;
+                    <input ng-change="calculateResults()" type="number" min="0" max="1" step="0.01" ng-model="opacity2" ng-init="opacity2=0.5"
+                    />
+                </div>
+            </div>
+
+            <!-- <div class="input-wrapper">
+                <h3>Color Three</h3>
+                <div>
+                    <input ng-change="calculateResults()" type="color" ng-model="color3" />
+                    <input ng-change="calculateResults()" type="text" ng-model="color3" />
+                </div>
+                <div>
+                    Opacity&nbsp;
+                    <input ng-change="calculateResults()" type="number" min="0" max="1" step="0.01" ng-model="opacity3" />
+                </div>
+            </div> -->
+        </div>
+
+
+        <div id="display-box">
+            <div id="display" style="background: {{base}}">
+                <div class="color" id="color1" style="background: {{color1}}; opacity: {{opacity1}}"></div>
+                <div class="color" id="color2" style="background: {{color2}}; opacity: {{opacity2}}"></div>
+                <!-- <div class="color" id="color3" style="background: {{color3}}; opacity: {{opacity3}}"></div> -->
+            </div>
+        </div>
+
+
+        <div id="results-box">
+            <div class="input-wrapper">
+                <h3>Base + Color One</h3>
+                <div>
+                    <input ng-change="" type="color" ng-model="result1" ng-init="calculateResults()" />
+                    <input ng-change="" type="text" ng-model="result1" style="background: {{result1}}" />
+                </div>
+                <!-- {{base}} +
+                <span style="background: {{color1}}">{{color1}}</span> at {{opacity1}} =>
+                <span style="background: {{result1}}">{{result1}}</span> -->
+            </div>
+            <div class="input-wrapper">
+                <h3>Base + Color Two + One</h3>
+                <div>
+                    <input ng-change="" type="color" ng-model="result12" ng-init="" />
+                    <input ng-change="" type="text" ng-model="result12" style="background: {{result12}}" />
+                </div>
+                <!-- {{base}} +
+                <span style="background: {{color1}}">{{color1}}</span> at {{opacity1}} +
+                <span style="background: {{color2}}">{{color2}}</span> at {{opacity2}} =>
+                <span style="background: {{result12}}">{{result12}}</span> -->
+            </div>
+            <div class="input-wrapper">
+                <h3>Base + Color Two</h3>
+                <div>
+                    <input ng-change="" type="color" ng-model="result2" ng-init="" />
+                    <input ng-change="" type="text" ng-model="result2" style="background: {{result2}}" />
+                </div>
+                <!-- {{base}} +
+                <span style="background: {{color2}}">{{color2}}</span> at {{opacity2}} =>
+                <span style="background: {{result2}}">{{result2}}</span> -->
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js" charset="utf-8"></script>
+    <script>
+        angular.module('colorBlender', [])
+
+            angular.module('colorBlender').controller('colorCtrl', function ($scope) {
+
+                $scope.calculateResults = function () {
+                    let { base, color1, color2, color3, opacity1, opacity2, opacity3 } = $scope
+                    console.log('calculating results')
+                    $scope.result1 = colorBlender(base, color1, opacity1)
+                    $scope.result2 = colorBlender(base, color2, opacity2)
+                    $scope.result12 = colorBlender($scope.result2, color1, opacity1)
+                    console.log($scope.result1, $scope.result12, $scope.result2)
+                }
+
+
+
+
+
+
+                function colorToArray(color) {
+                    color = color.trim()
+                    if (color[0] === '#') {
+                        color = color.slice(1)
+                        if (color.length === 3) {
+                            color = color.split('').map(c => c.repeat(2))
+                        }
+                        else if (color.length === 6) {
+                            color = [color.slice(0, 2), color.slice(2, 4), color.slice(4, 6)]
+                        }
+                        else return 'Hexadecimal colors must contain 3 or 6 digits'
+
+                        let hexadecimal = {
+                            0: 0,
+                            1: 1,
+                            2: 2,
+                            3: 3,
+                            4: 4,
+                            5: 5,
+                            6: 6,
+                            7: 7,
+                            8: 8,
+                            9: 9,
+                            a: 10,
+                            b: 11,
+                            c: 12,
+                            d: 13,
+                            e: 14,
+                            f: 15
+                        }
+
+                        color = color.map(c => {
+                            c = c.toLowerCase()
+                            return hexadecimal[c[0]] * 16 + hexadecimal[c[1]]
+                        })
+
+                    }
+                    else if (color[0] === 'r') {
+                        color = color.slice(color.indexOf('(') + 1, color.length - 1).split(',').map(c => Number(c.trim()))
+
+                    }
+                    else return 'Must input hexadecimal or rgb color'
+                    return color
+                }
+
+
+
+                function arrayToColor(color) {
+                    if (color.length === 4) return `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3]})`
+                    if (color.length === 3) return `rgb(${color[0]}, ${color[1]}, ${color[2]})`
+                }
+
+
+
+                function colorBlender(base, color, opacity) {
+
+                    if (!Array.isArray(base)) base = colorToArray(base)
+                    if (!Array.isArray(color)) color = colorToArray(color)
+
+                    if (base[3] !== undefined && base[3] !== 1) return 'Base color must be opaque. If using rgba(), specify \'1\' as the alpha value'
+                    if (opacity !== undefined && color[3] !== undefined) return 'Define transparency either through using rgba() or specifying the opacity parameter, not both'
+                    if (!opacity && opacity !== 0) opacity = color[3]
+                    if (opacity <= 0 || color[3] <= 0) return 'Opacity/alpha must be greater than zero'
+                    if (!opacity) return 'Must specify opacity'
+                    if (opacity >= 1) return 'Opacity/alpha must be less than one'
+
+                    console.log(base, color, opacity)
+
+                    let blend = c => (base[c] * (1 - opacity) + color[c] * opacity).toFixed(0)
+
+                    let r = blend(0)
+                    let g = blend(1)
+                    let b = blend(2)
+
+                    let result = [r, g, b]
+
+                    return arrayToColor(result)
+
+                }
+
+
+
+                function colorFinder(result, base, opacity) {
+
+                    if (!Array.isArray(base)) base = colorToArray(base)
+                    if (!Array.isArray(result)) result = colorToArray(result)
+
+                    if (opacity <= 0) return 'Opacity must be greater than zero'
+                    if (!opacity) return 'Must specify opacity'
+                    if (opacity >= 1) return 'Opacity must be less than one'
+
+                    console.log(result, base, opacity)
+
+                    let unblend = c => ((result[c] - (base[c] * (1 - opacity))) / opacity).toFixed(0)
+
+                    let r = unblend(0)
+                    let g = unblend(1)
+                    let b = unblend(2)
+
+                    let color = [r, g, b, opacity]
+
+                    if (color.reduce((a, b) => a || (b < 0 || b > 255), false)) return 'Result not possible with given base & opacity'
+
+                    return arrayToColor(color)
+
+                }
+
+
+
+                function baseFinder(result, color, opacity) {
+
+                    if (!Array.isArray(result)) result = colorToArray(result)
+                    if (!Array.isArray(color)) color = colorToArray(color)
+
+                    if (opacity !== undefined && color[3] !== undefined) return 'Define transparency either through using rgba() or specifying the opacity parameter, not both'
+                    if (!opacity && opacity !== 0) opacity = color[3]
+                    if (opacity <= 0 || color[3] <= 0) return 'Opacity/alpha must be greater than zero'
+                    if (!opacity) return 'Must specify opacity'
+                    if (opacity >= 1) return 'Opacity/alpha must be less than one'
+
+                    console.log(result, color, opacity)
+
+                    let unblend = c => (result[c] - (color[c] * opacity) / (1 - opacity)).toFixed(0)
+
+                    let r = unblend(0)
+                    let g = unblend(1)
+                    let b = unblend(2)
+
+                    let base = [r, g, b]
+
+                    if (base.reduce((a, b) => a || (b < 0 || b > 255), false)) return 'Result not possible with given color & opacity'
+
+                    return arrayToColor(base)
+
+                }
+
+            })
+
+        
+
+    </script>
+
+</body>
+
+</html>
