@@ -16,36 +16,36 @@
 
     <div id="view">
         <div id="input-box">
-            <div class="input-wrapper">
+            <div id="base" class="{{disabledInputs.includes('base') ? 'input-wrapper disabled' : 'input-wrapper'}}">
                 <h3>Base Color</h3>
                 <div>
-                    <input ng-change="calculateResults()" type="color" ng-model="base" ng-init="base='#FFFFFF'" />
-                    <input ng-change="calculateResults()" type="text" ng-model="base" style="border: 3px solid {{base}}" />
+                    <input ng-change="calculateResults('base')" type="color" ng-model="base" ng-init="base='#FFFFFF'" />
+                    <input ng-change="calculateResults('base')" type="text" ng-model="base" style="border: 3px solid {{base}}" />
                 </div>
             </div>
 
-            <div class="input-wrapper">
+            <div id="color1" class="{{disabledInputs.includes('color1') ? 'input-wrapper disabled' : 'input-wrapper'}}">
                 <h3>Color One</h3>
                 <div>
-                    <input ng-change="calculateResults()" type="color" ng-model="color1" ng-init="color1='#00FFFF'" />
-                    <input ng-change="calculateResults()" type="text" ng-model="color1" style="border: 3px solid {{color1}}" />
+                    <input ng-change="calculateResults('color1')" type="color" ng-model="color1" ng-init="color1='#00FFFF'" />
+                    <input ng-change="calculateResults('color1')" type="text" ng-model="color1" style="border: 3px solid {{color1}}" />
                 </div>
                 <div>
                     Opacity&nbsp;
-                    <input ng-change="calculateResults()" type="number" min="0" max="1" step="0.01" ng-model="opacity1" ng-init="opacity1=0.5"
+                    <input ng-change="calculateResults('color1')" type="number" min="0" max="1" step="0.01" ng-model="opacity1" ng-init="opacity1=0.5"
                     />
                 </div>
             </div>
 
-            <div class="input-wrapper">
+            <div id="color2" class="{{disabledInputs.includes('color2') ? 'input-wrapper disabled' : 'input-wrapper'}}">
                 <h3>Color Two</h3>
                 <div>
-                    <input ng-change="calculateResults()" type="color" ng-model="color2" ng-init="color2='#0000FF'" />
-                    <input ng-change="calculateResults()" type="text" ng-model="color2" style="border: 3px solid {{color2}}" />
+                    <input ng-change="calculateResults('color2')" type="color" ng-model="color2" ng-init="color2='#0000FF'" />
+                    <input ng-change="calculateResults('color2')" type="text" ng-model="color2" style="border: 3px solid {{color2}}" />
                 </div>
                 <div>
                     Opacity&nbsp;
-                    <input ng-change="calculateResults()" type="number" min="0" max="1" step="0.01" ng-model="opacity2" ng-init="opacity2=0.5"
+                    <input ng-change="calculateResults('color2')" type="number" min="0" max="1" step="0.01" ng-model="opacity2" ng-init="opacity2=0.5"
                     />
                 </div>
             </div>
@@ -69,18 +69,34 @@
 
         <div id="display-box">
             <div id="mode">
-                <div id="mode-1"></div>
-                <div id="mode-2"></div>
-                <div id="mode-3"></div>
-                <div id="mode-4"></div>                
+                <div class="{{mode === 1 ? 'selected-mode' : ''}}" id="mode-1" ng-click="toggleMode(1)" ng-init="toggleMode(1)" >
+                    <!-- <div>
+                        <div></div>
+                        <div></div>
+                    </div> -->
+                </div>
+                <div class="{{mode === 2 ? 'selected-mode' : ''}}" id="mode-2" ng-click="toggleMode(2)" >
+                    <div></div>
+                </div>
+                <!-- <div class="{{mode === 3 ? 'selected-mode' : ''}}" id="mode-3" ng-click="toggleMode(3)" >
+                    <div></div>
+                    <div></div>
+                </div> -->
+                <div class="{{mode === 4 ? 'selected-mode' : ''}}" id="mode-4" ng-click="toggleMode(4)" >
+                    <div></div>
+                </div>
+                <div class="{{mode === 5 ? 'selected-mode' : ''}}" id="mode-5" ng-click="toggleMode(5)" >
+                    <div></div>
+                </div>
             </div>
+
             <div id="display" style="background: {{base}}">
-                <div class="color" id="color1" style="background: {{color1}}; opacity: {{opacity1}}"></div>
-                <div class="color" id="color2" style="background: {{color2}}; opacity: {{opacity2}}"></div>
+                <div class="color" id="color1-display" style="background: {{color1}}; opacity: {{opacity1}}"></div>
+                <div class="color" id="color2-display" style="background: {{color2}}; opacity: {{opacity2}}"></div>
                 <div class="display-label" id="base-label">Base</div>
                 <div class="display-label" id="color1-label">Base + Color One</div>
                 <div class="display-label" id="color12-label">Base + Color Two + Color One</div>
-                <div class="display-label" id="color2-label">Base + Color Two</div>                
+                <div class="display-label" id="color2-label">Base + Color Two</div>
                 <!-- <div class="color" id="color3" style="background: {{color3}}; opacity: {{opacity3}}"></div> -->
             </div>
         </div>
@@ -90,41 +106,38 @@
 
 
         <div id="results-box">
-            <div id="result1" class="{{selection.includes(1) ? 'input-wrapper selected' : 'input-wrapper'}}" ng-click="selectResult(1)"
-                ng-click="$event.stopPropagation()">
+            <div id="result1" class="{{disabledInputs.includes('result1') ? 'input-wrapper disabled' : 'input-wrapper'}}" ng-click="selectResult(1); $event.stopPropagation()">
                 <h3>Base + Color One</h3>
                 <div>
-                    <input ng-change="calculateColor()" type="color" ng-model="result1" ng-init="calculateResults()" />
-                    <input ng-change="calculateColor()" type="text" ng-model="result1" style="background: {{result1}}" />
+                    <input ng-change="calculateResults('result1')" type="color" ng-model="result1" ng-init="calculateResults('base')" />
+                    <input ng-change="calculateResults('result1')" type="text" ng-model="result1" style="background: {{result1}}" />
                 </div>
                 <div>
-                    <input ng-change="calculateResults()" type="number" min="0" max="1" step="0.01" ng-model="opacity1" />
+                    <input ng-change="calculateResults('result1')" type="number" min="0" max="1" step="0.01" ng-model="opacity1" />
                 </div>
                 <!-- {{base}} +
                 <span style="background: {{color1}}">{{color1}}</span> at {{opacity1}} =>
                 <span style="background: {{result1}}">{{result1}}</span> -->
             </div>
-            <div id="result12" class="{{selection.includes(12) ? 'input-wrapper selected' : 'input-wrapper'}}" ng-click="selectResult(12)"
-                ng-click="$event.stopPropagation()">
+            <div id="result12" class="{{disabledInputs.includes('result12') ? 'input-wrapper disabled' : 'input-wrapper'}}" ng-click="selectResult(12); $event.stopPropagation()">
                 <h3>Base + Color Two + One</h3>
                 <div>
-                    <input ng-change="calculateColor()" type="color" ng-model="result12" ng-init="" />
-                    <input ng-change="calculateColor()" type="text" ng-model="result12" style="background: {{result12}}" />
+                    <input ng-change="calculateResults('result12')" type="color" ng-model="result12" ng-init="" />
+                    <input ng-change="calculateResults('result12')" type="text" ng-model="result12" style="background: {{result12}}" />
                 </div>
                 <!-- {{base}} +
                 <span style="background: {{color1}}">{{color1}}</span> at {{opacity1}} +
                 <span style="background: {{color2}}">{{color2}}</span> at {{opacity2}} =>
                 <span style="background: {{result12}}">{{result12}}</span> -->
             </div>
-            <div id="result2" class="{{selection.includes(2) ? 'input-wrapper selected' : 'input-wrapper'}}" ng-click="selectResult(2)"
-                ng-click="$event.stopPropagation()">
+            <div id="result2" class="{{disabledInputs.includes('result2') ? 'input-wrapper disabled' : 'input-wrapper'}}" ng-click="selectResult(2); $event.stopPropagation()">
                 <h3>Base + Color Two</h3>
                 <div>
-                    <input ng-change="calculateColor()" type="color" ng-model="result2" ng-init="" />
-                    <input ng-change="calculateColor()" type="text" ng-model="result2" style="background: {{result2}}" />
+                    <input ng-change="calculateResults('result2')" type="color" ng-model="result2" ng-init="" />
+                    <input ng-change="calculateResults('result2')" type="text" ng-model="result2" style="background: {{result2}}" />
                 </div>
                 <div>
-                    <input ng-change="calculateResults()" type="number" min="0" max="1" step="0.01" ng-model="opacity2" />
+                    <input ng-change="calculateResults('result2')" type="number" min="0" max="1" step="0.01" ng-model="opacity2" />
                 </div>
                 <!-- {{base}} +
                 <span style="background: {{color2}}">{{color2}}</span> at {{opacity2}} =>

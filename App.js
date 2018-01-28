@@ -19,82 +19,135 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
 
 
 
-    function toggleDisableInputs(parent) {
-        let color = document.getElementById(parent).children[0]
-        let text = document.getElementById(parent).children[1]
-        if (color.disabled === false || text.disabled === false) {
+    function disableInputs(parents) {
+        parents.map(parent => {
+            console.log(parent)
+            if (!$scope.disabledInputs) $scope.disabledInputs = []
+            if (!$scope.disabledInputs.includes(parent)) $scope.disabledInputs.push(parent)
+            let color = document.getElementById(parent).children[1].children[0]
+            let text = document.getElementById(parent).children[1].children[1]
+            let opacity = {
+                getAttribute: () => false,
+                setAttribute: () => false
+            }
+            if (parent !== 'result12' && parent !== 'base') {
+                opacity = document.getElementById(parent).children[2].children[0]
+            }
+            console.log(color, text, opacity)
+            console.log($scope.disabledInputs)
             color.setAttribute('disabled', true)
             text.setAttribute('disabled', true)
-        }
-        else {
+            opacity.setAttribute('disabled', true)
+        })
+    }
+
+    function enableInputs(parents) {
+        parents.map(parent => {
+            console.log(parent)
+            if (!$scope.disabledInputs) $scope.disabledInputs = []
+            if ($scope.disabledInputs.includes(parent)) {
+                $scope.disabledInputs = $scope.disabledInputs.filter(item => item !== parent)
+            }
+            let color = document.getElementById(parent).children[1].children[0]
+            let text = document.getElementById(parent).children[1].children[1]
+            let opacity = {
+                setAttribute: () => false,
+                removeAttribute: () => false
+            }
+            if (parent !== 'result12' && parent !== 'base') {
+                opacity = document.getElementById(parent).children[2].children[0]
+            }
             color.removeAttribute('disabled')
             text.removeAttribute('disabled')
-        }
+            opacity.removeAttribute('disabled')
+        })
     }
 
-
-
-    $scope.modes = {
-        freePlay: "free play", // input whatever and see results cannot edit result12
-        findBase: "find base", // input color1 & 2 & result 1 & 2 cannot edit result12
-        findColor1: "find color one", // can edit anything
-        findColor2: "find color two", // can edit anything
-    }
-
-    $scope.selectMode = function (mode) {
-        let { freePlay, findBase, findColor1, findColor2 } = $scope.modes
-        let { base, color1, color2, color3, opacity1, opacity2, opacity3, result1, result2, result12 } = $scope
-        switch (mode) {
-            case freePlay:
-
+    $scope.toggleMode = function (number) {
+        $scope.mode = number
+        console.log(number)
+        let disabled = []
+        let enabled = []
+        let base = 'base'
+        let color1 = 'color1'
+        let color2 = 'color2'
+        let result1 = 'result1'
+        let result2 = 'result2'
+        let result12 = 'result12'
+        switch (Number(number)) {
+            case 1: // free play
+                disabled = [result12]
+                enabled = [base, color1, color2, result1, result2]
                 break;
-            case findBase:
-
+            case 2: // find color one
+                disabled = [color1]
+                enabled = [base, color2, result1, result2, result12]
                 break;
-            case findColor1:
-
+            case 3: // find mix
+                disabled = []
                 break;
-            case findColor2:
-
+            case 4: // find color 2
+                disabled = [color2]
+                enabled = [base, color1, ]
+                break;
+            case 5: // find base
+                disabled = [base]
+                enabled = [color1, color2, result1, result2, result12]
                 break;
             default:
                 console.log('invalid mode')
         }
+        disableInputs(disabled)
+        enableInputs(enabled)
     }
+
 
     $scope.calculateResults = function (input) {
+        
         console.log('calculating results')
-        switch (input) {
-            case 'base':
-                $scope.result1 = colorBlender(base, color1, opacity1)
-                $scope.result2 = colorBlender(base, color2, opacity2)
-                $scope.result12 = colorBlender(result2, $scope.result1, opacity1)
-            case 'color1':
-                $scope.result1 = colorBlender(base, color1, opacity1)
-                $scope.result12 = colorBlender(result2, $scope.result1, opacity1)
-            case 'color2':
-                $scope.result2 = colorBlender(base, color2, opacity2)
-                $scope.result12 = colorBlender($scope.result2, color1, opacity1)
-            case 'result1':
-            case 'result2':
-            case 'result12':
+
+        let { base, color1, color2, opacity1, opacity2, result1, result2, result12, disabledInputs } = $scope
+
+        console.log(base, color1, color2, opacity1, opacity2, result1, result2, result12, disabledInputs)
+
+        if (input === 'base' || (input === 'color1' || input === 'color2')) {
+            $scope.result1 = colorBlender(base, color1, opacity1)
+            $scope.result2 = colorBlender(base, color2, opacity2)
+            $scope.result12 = colorBlender($scope.result2, color1, opacity1)
         }
+
+        if (input === 'result1') {
+            if (disabledInputs.includes('base')) {
+                $scope.base = baseFinder(result1, color1, opacity1)
+            }
+            else {
+                $scope.color1 = colorFinder(result1, base, opacity1)
+            }
+        }
+
+        if (input === 'result2') {
+            if (disabledInputs.includes('base')) {
+                $scope.base = baseFinder(result2, color2, opacity2)
+            }
+            else {
+                $scope.color2 = colorFinder(result2, base, opacity2)
+            }
+        }
+
+        if (input === 'result12') {
+            if (disabledInputs.includes('color1')) {
+                $scope.color1 = colorFinder(result12, result2, opacity1)
+            }
+            if (disabledInputs.includes('color2')) {
+                $scope.color2 = colorFinder(result12, result1, opacity2)
+            }
+            if (disabledInputs.includes('base')) {
+                $scope.base = baseFinder()
+            }
+        }
+
         console.log($scope.result1, $scope.result12, $scope.result2)
     }
-
-    $scope.calculateColor = function () {
-        let { base, opacity1, opacity2, opacity3, result1, result12, result2 } = $scope
-        $scope.color1 = colorFinder(result1, base, opacity1)
-        $scope.color2 = colorFinder(result2, base, opacity2)
-        $scope.result12 = colorBlender(result2, $scope.color1, opacity1)
-    }
-
-    $scope.calculateBase = function () {
-        let { color1, color2, color3, opacity1, opacity2, opacity3, result1, result12, result2 } = $scope
-
-    }
-
-
 
 
 
