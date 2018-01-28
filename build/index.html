@@ -11,110 +11,192 @@
 
 </head>
 
-<body>
+<body ng-controller="colorCtrl">
 
     <style>
-        html, body {
-    margin: 0;
-    padding: 0;
-}
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
 
-*, input {
-    font-family: calibri;
-}
+        * {
+            font-family: Calibri, Segoe UI, Segoe, Optima, Arial, sans-serif;
+        }
 
-#view {
+        #input-box {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 30vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            background: #333333;
+        }
 
-}
+        .input-wrapper {
+            display: flex;
+            flex-flow: column nowrap;
+            color: rgba(255, 255, 255, 0.675);
+            padding: 0 1rem 1rem;
+        }
 
-#input-box {
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 30vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    background: #333333;
-}
+        .input-wrapper:first-of-type {
+            margin-top: 3rem;
+        }
 
-.input-wrapper {
-    display: flex;
-    flex-flow: column nowrap;
-    color: rgba(255, 255, 255, 0.675);
-    padding: 0 1rem 1rem;
-}
+        .input-wrapper:last-of-type {
+            margin-bottom: 8rem;
+        }
 
-.input-wrapper:first-of-type {
-    margin-top: 3rem;
-}
+        .input-wrapper div {
+            display: flex;
+            margin: 2.5px 0;
+            justify-content: space-between;
+        }
 
-.input-wrapper:last-of-type{
-    margin-bottom: 8rem;
-}
+        input {
+            /* margin: 2.5px; */
+            /* background: #CCC; */
+        }
 
-.input-wrapper div {
-    display: flex;
-    margin: 2.5px 0;
-    justify-content: space-between;
-}
+        .disabled {
+            border: 2px solid black;
+            background: #3B3B3B;
+            /* #282828; */
+        }
 
-input {
-    /* margin: 2.5px; */
-    /* background: #CCC; */
-}
+        #display-box {
+            position: fixed;
+            left: 30vw;
+            top: 0;
+            bottom: 0;
+            width: 40vw;
+            background: #222222;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
 
-.selected {
-    border: 2px solid black;
-    background: #3B3B3B;
-    /* #282828; */
-}
+        #display-box div {
+            box-sizing: border-box;
+        }
 
-#display-box {
-    position: fixed;
-    left: 30vw;
-    top: 0;
-    bottom: 0;
-    width: 40vw;
-    background: #222222;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+        #mode {
+            background: #444;
+            height: 7.5%;
+            width: 80%;
+            padding: 0.5rem;
+            margin-bottom: 5%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
 
-#display {
-    width: 75%;
-    height: 85%;
-    border: 5px solid white;
-    position: relative;
-    /* display: flex;
+        #mode>div {
+            background: black;
+            height: 100%;
+            width: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #mode-1>div {
+            background: white;
+            width: 75%;
+            height: 75%;
+            opacity: 0.75;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #mode-1>div>div {
+            background: #00FFFF;
+            width: 67%;
+            height: 67%;
+            border-radius: 100%;
+            opacity: 0.75;
+            margin: -12.5%;
+        }
+
+        #mode-2 div {
+            background: #00FFFF;
+            width: 50%;
+            height: 50%;
+            border-radius: 100%;
+            margin-bottom: 25%;
+            opacity: 0.75;
+        }
+
+        #mode-3 div {
+            width: 50%;
+            height: 50%;
+            border-radius: 100%;
+            background: white;
+            opacity: 0.325;
+            margin: -12.5%;
+        }
+
+        #mode-4 div {
+            background: #0000FF;
+            width: 50%;
+            height: 50%;
+            border-radius: 100%;
+            margin-top: 25%;
+            opacity: 0.75;
+        }
+
+        #mode-5 div {
+            background: white;
+            width: 75%;
+            height: 75%;
+            opacity: 0.75;
+        }
+
+        .selected-mode {
+            border: 1px solid rgba(0, 255, 255, 0.5);
+            opacity: 0.33;
+        }
+
+        #display {
+            height: 80%;
+            width: 80%;
+            /* border: 5px solid white; */
+            position: relative;
+            /* display: flex;
     flex-flow: column wrap;
     justify-content: center;
     align-items: center; */
-}
+        }
 
-.color {
-    height: 50%;
-    width: 75%;
-    border-radius: 100%;
-    position: absolute;
-}
+        .color {
+            height: 50%;
+            width: 75%;
+            border-radius: 100%;
+            position: absolute;
+        }
 
-#color1 {
-    top: 10%;
-    left: 12.5%;
-    z-index: 3
-}
+        #color1-display {
+            top: 10%;
+            left: 12.5%;
+            z-index: 3
+        }
 
-#color2 {
-    bottom: 10%;
-    left: 12.5%;
-    z-index: 2;
-}
+        #color2-display {
+            bottom: 10%;
+            left: 12.5%;
+            z-index: 2;
+        }
 
-/* 
+        /* 
 #color3 {
     right: 10%;
     bottom: 10%;
@@ -122,54 +204,147 @@ input {
 }
 */
 
-#results-box {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    top: 0;
-    width: 30vw;
-    background: #2C2C2C;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-}
+        .display-label {
+            position: absolute;
+            left: 25%;
+            right: 25%;
+            width: 50%;
+            font-size: 1rem;
+            text-align: center;
+            z-index: 4;
+        }
 
+        #base-label {
+            bottom: 2.5%;
+            left: 5%;
+            text-align: left;
+        }
+
+        #color1-label {
+            top: 25%;
+        }
+
+        #color12-label {
+            top: calc(50% - 0.5rem);
+        }
+
+        #color2-label {
+            bottom: 25%;
+        }
+
+        #results-box {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            top: 0;
+            width: 30vw;
+            background: #2C2C2C;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+
+
+        .header {
+            position: fixed;
+            top: 0;
+            width: calc(30vw - 1rem);
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            font-size: 1.125rem;
+        }
+
+        #left-header {
+            left: 0;
+            justify-content: flex-start;
+        }
+
+        #right-header {
+            right: 0;
+            justify-content: flex-end;
+        }
+
+        button {
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.125rem;
+        }
+
+        #cover {
+            position: fixed;
+            height: 100vh;
+            width: 100vw;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.1);
+            opacity: transparent;
+        }
+
+        .slide {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            height: 100vh;
+            width: 30vw;
+            background: #444;
+            transition: left 0.4s ease, right 0.4s ease;
+        }
+
+        #left-slide-in {
+            left: 0;
+        }
+
+        #left-slide-out {
+            left: -30vw;
+        }
+
+        #right-slide-in {
+            right: 0;
+        }
+
+        #right-slide-out {
+            right: -30vw;
+        }
     </style>
 
-
-    <div id="view" ng-controller="colorCtrl">
+    <div id="view">
         <div id="input-box">
-            <div class="input-wrapper">
+            <div id="base" class="{{disabledInputs.includes('base') ? 'input-wrapper disabled' : 'input-wrapper'}}">
                 <h3>Base Color</h3>
                 <div>
-                    <input ng-change="calculateResults()" type="color" ng-model="base" ng-init="base='#FFFFFF'" />
-                    <input ng-change="calculateResults()" type="text" ng-model="base" style="border: 3px solid {{base}}" />
+                    <input ng-change="calculateResults('base')" type="color" ng-model="base" ng-init="base='#FFFFFF'" />
+                    <input ng-change="calculateResults('base')" type="text" ng-model="base" style="border: 3px solid {{base}}" />
                 </div>
             </div>
 
-            <div class="input-wrapper">
+            <div id="color1" class="{{disabledInputs.includes('color1') ? 'input-wrapper disabled' : 'input-wrapper'}}">
                 <h3>Color One</h3>
                 <div>
-                    <input ng-change="calculateResults()" type="color" ng-model="color1" ng-init="color1='#00FFFF'" />
-                    <input ng-change="calculateResults()" type="text" ng-model="color1" style="border: 3px solid {{color1}}" />
+                    <input ng-change="calculateResults('color1')" type="color" ng-model="color1" ng-init="color1='#00FFFF'" />
+                    <input ng-change="calculateResults('color1')" type="text" ng-model="color1" style="border: 3px solid {{color1}}" />
                 </div>
                 <div>
                     Opacity&nbsp;
-                    <input ng-change="calculateResults()" type="number" min="0" max="1" step="0.01" ng-model="opacity1" ng-init="opacity1=0.5"
+                    <input ng-change="calculateResults('color1')" type="number" min="0" max="1" step="0.01" ng-model="opacity1" ng-init="opacity1=0.5"
                     />
                 </div>
             </div>
 
-            <div class="input-wrapper">
+            <div id="color2" class="{{disabledInputs.includes('color2') ? 'input-wrapper disabled' : 'input-wrapper'}}">
                 <h3>Color Two</h3>
                 <div>
-                    <input ng-change="calculateResults()" type="color" ng-model="color2" ng-init="color2='#0000FF'" />
-                    <input ng-change="calculateResults()" type="text" ng-model="color2" style="border: 3px solid {{color2}}" />
+                    <input ng-change="calculateResults('color2')" type="color" ng-model="color2" ng-init="color2='#0000FF'" />
+                    <input ng-change="calculateResults('color2')" type="text" ng-model="color2" style="border: 3px solid {{color2}}" />
                 </div>
                 <div>
                     Opacity&nbsp;
-                    <input ng-change="calculateResults()" type="number" min="0" max="1" step="0.01" ng-model="opacity2" ng-init="opacity2=0.5"
+                    <input ng-change="calculateResults('color2')" type="number" min="0" max="1" step="0.01" ng-model="opacity2" ng-init="opacity2=0.5"
                     />
                 </div>
             </div>
@@ -188,42 +363,80 @@ input {
         </div>
 
 
+
+
+
         <div id="display-box">
+            <div id="mode">
+                <div class="{{mode === 1 ? 'selected-mode' : ''}}" id="mode-1" ng-click="toggleMode(1)" ng-init="toggleMode(1)">
+                    <!-- <div>
+                        <div></div>
+                        <div></div>
+                    </div> -->
+                </div>
+                <div class="{{mode === 2 ? 'selected-mode' : ''}}" id="mode-2" ng-click="toggleMode(2)">
+                    <div></div>
+                </div>
+                <!-- <div class="{{mode === 3 ? 'selected-mode' : ''}}" id="mode-3" ng-click="toggleMode(3)" >
+                    <div></div>
+                    <div></div>
+                </div> -->
+                <div class="{{mode === 4 ? 'selected-mode' : ''}}" id="mode-4" ng-click="toggleMode(4)">
+                    <div></div>
+                </div>
+                <div class="{{mode === 5 ? 'selected-mode' : ''}}" id="mode-5" ng-click="toggleMode(5)">
+                    <div></div>
+                </div>
+            </div>
+
             <div id="display" style="background: {{base}}">
-                <div class="color" id="color1" style="background: {{color1}}; opacity: {{opacity1}}"></div>
-                <div class="color" id="color2" style="background: {{color2}}; opacity: {{opacity2}}"></div>
+                <div class="color" id="color1-display" style="background: {{color1}}; opacity: {{opacity1}}"></div>
+                <div class="color" id="color2-display" style="background: {{color2}}; opacity: {{opacity2}}"></div>
+                <div class="display-label" id="base-label">Base</div>
+                <div class="display-label" id="color1-label">Base + Color One</div>
+                <div class="display-label" id="color12-label">Base + Color Two + Color One</div>
+                <div class="display-label" id="color2-label">Base + Color Two</div>
                 <!-- <div class="color" id="color3" style="background: {{color3}}; opacity: {{opacity3}}"></div> -->
             </div>
         </div>
 
 
+
+
+
         <div id="results-box">
-            <div class="{{selection.includes(1) ? 'input-wrapper selected' : 'input-wrapper'}}" ng-click="selectResult(1)">
+            <div id="result1" class="{{disabledInputs.includes('result1') ? 'input-wrapper disabled' : 'input-wrapper'}}" ng-click="selectResult(1); $event.stopPropagation()">
                 <h3>Base + Color One</h3>
-                <div id="result1" ng-click="$event.stopPropagation()">
-                    <input ng-change="calculateColor()" type="color" ng-model="result1" ng-init="calculateResults()" />
-                    <input ng-change="calculateColor()" type="text" ng-model="result1" style="background: {{result1}}" />
+                <div>
+                    <input ng-change="calculateResults('result1')" type="color" ng-model="result1" ng-init="calculateResults('base')" />
+                    <input ng-change="calculateResults('result1')" type="text" ng-model="result1" style="background: {{result1}}" />
+                </div>
+                <div>
+                    <input ng-change="calculateResults('result1')" type="number" min="0" max="1" step="0.01" ng-model="opacity1" />
                 </div>
                 <!-- {{base}} +
                 <span style="background: {{color1}}">{{color1}}</span> at {{opacity1}} =>
                 <span style="background: {{result1}}">{{result1}}</span> -->
             </div>
-            <div class="{{selection.includes(12) ? 'input-wrapper selected' : 'input-wrapper'}}" ng-click="selectResult(12)">
+            <div id="result12" class="{{disabledInputs.includes('result12') ? 'input-wrapper disabled' : 'input-wrapper'}}" ng-click="selectResult(12); $event.stopPropagation()">
                 <h3>Base + Color Two + One</h3>
-                <div id="result12" ng-click="$event.stopPropagation()">
-                    <input ng-change="calculateColor()" type="color" ng-model="result12" ng-init="" />
-                    <input ng-change="calculateColor()" type="text" ng-model="result12" style="background: {{result12}}" />
+                <div>
+                    <input ng-change="calculateResults('result12')" type="color" ng-model="result12" ng-init="" />
+                    <input ng-change="calculateResults('result12')" type="text" ng-model="result12" style="background: {{result12}}" />
                 </div>
                 <!-- {{base}} +
                 <span style="background: {{color1}}">{{color1}}</span> at {{opacity1}} +
                 <span style="background: {{color2}}">{{color2}}</span> at {{opacity2}} =>
                 <span style="background: {{result12}}">{{result12}}</span> -->
             </div>
-            <div class="{{selection.includes(2) ? 'input-wrapper selected' : 'input-wrapper'}}" ng-click="selectResult(2)">
+            <div id="result2" class="{{disabledInputs.includes('result2') ? 'input-wrapper disabled' : 'input-wrapper'}}" ng-click="selectResult(2); $event.stopPropagation()">
                 <h3>Base + Color Two</h3>
-                <div id="result2" ng-click="$event.stopPropagation()">
-                    <input ng-change="calculateColor()" type="color" ng-model="result2" ng-init="" />
-                    <input ng-change="calculateColor()" type="text" ng-model="result2" style="background: {{result2}}" />
+                <div>
+                    <input ng-change="calculateResults('result2')" type="color" ng-model="result2" ng-init="" />
+                    <input ng-change="calculateResults('result2')" type="text" ng-model="result2" style="background: {{result2}}" />
+                </div>
+                <div>
+                    <input ng-change="calculateResults('result2')" type="number" min="0" max="1" step="0.01" ng-model="opacity2" />
                 </div>
                 <!-- {{base}} +
                 <span style="background: {{color2}}">{{color2}}</span> at {{opacity2}} =>
@@ -232,133 +445,198 @@ input {
         </div>
     </div>
 
+    <div id="auxiliaries">
+
+        <div id="cover" ng-click="closeLeftAndRight()" ng-if="leftIn || rightIn"></div>
+
+        <div id="left-header" class="header">
+            <button ng-click="toggleLeft()">Saved Colors</button>
+        </div>
+
+        <div id="right-header" class="header">
+            <button ng-click="toggleRight()">?</button>
+        </div>
+
+        <div id="{{leftIn ? 'left-slide-in' : 'left-slide-out'}}" class="slide">
+
+        </div>
+
+        <div id="{{rightIn ? 'right-slide-in' : 'right-slide-out'}}" class="slide">
+
+        </div>
+
+    </div>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js" charset="utf-8"></script>
     <script>
         angular.module('colorBlender', [])
 
-            angular.module('colorBlender').controller('colorCtrl', function ($scope) {
+        angular.module('colorBlender').controller('colorCtrl', function ($scope) {
 
-                $scope.selection = []
+            $scope.toggleLeft = function () {
+                if ($scope.leftIn) $scope.leftIn = false
+                else $scope.leftIn = true
+            }
 
-                $scope.calculateResults = function () {
-                    let { base, color1, color2, color3, opacity1, opacity2, opacity3 } = $scope
-                    console.log('calculating results')
-                    console.log(opacity1, opacity2)
+            $scope.toggleRight = function () {
+                if ($scope.rightIn) $scope.rightIn = false
+                else $scope.rightIn = true
+            }
+
+            $scope.closeLeftAndRight = function () {
+                $scope.rightIn = false
+                $scope.leftIn = false
+            }
+
+
+
+            function disableInputs(parents) {
+                parents.map(parent => {
+                    console.log(parent)
+                    if (!$scope.disabledInputs) $scope.disabledInputs = []
+                    if (!$scope.disabledInputs.includes(parent)) $scope.disabledInputs.push(parent)
+                    let color = document.getElementById(parent).children[1].children[0]
+                    let text = document.getElementById(parent).children[1].children[1]
+                    let opacity = {
+                        getAttribute: () => false,
+                        setAttribute: () => false
+                    }
+                    if (parent !== 'result12' && parent !== 'base') {
+                        opacity = document.getElementById(parent).children[2].children[0]
+                    }
+                    console.log(color, text, opacity)
+                    console.log($scope.disabledInputs)
+                    color.setAttribute('disabled', true)
+                    text.setAttribute('disabled', true)
+                    opacity.setAttribute('disabled', true)
+                })
+            }
+
+            function enableInputs(parents) {
+                parents.map(parent => {
+                    console.log(parent)
+                    if (!$scope.disabledInputs) $scope.disabledInputs = []
+                    if ($scope.disabledInputs.includes(parent)) {
+                        $scope.disabledInputs = $scope.disabledInputs.filter(item => item !== parent)
+                    }
+                    let color = document.getElementById(parent).children[1].children[0]
+                    let text = document.getElementById(parent).children[1].children[1]
+                    let opacity = {
+                        setAttribute: () => false,
+                        removeAttribute: () => false
+                    }
+                    if (parent !== 'result12' && parent !== 'base') {
+                        opacity = document.getElementById(parent).children[2].children[0]
+                    }
+                    color.removeAttribute('disabled')
+                    text.removeAttribute('disabled')
+                    opacity.removeAttribute('disabled')
+                })
+            }
+
+            $scope.toggleMode = function (number) {
+                $scope.mode = number
+                console.log(number)
+                let disabled = []
+                let enabled = []
+                let base = 'base'
+                let color1 = 'color1'
+                let color2 = 'color2'
+                let result1 = 'result1'
+                let result2 = 'result2'
+                let result12 = 'result12'
+                switch (Number(number)) {
+                    case 1: // free play
+                        disabled = [result12]
+                        enabled = [base, color1, color2, result1, result2]
+                        break;
+                    case 2: // find color one
+                        disabled = [color1]
+                        enabled = [base, color2, result1, result2, result12]
+                        break;
+                    case 3: // find mix
+                        disabled = []
+                        break;
+                    case 4: // find color 2
+                        disabled = [color2]
+                        enabled = [base, color1,]
+                        break;
+                    case 5: // find base
+                        disabled = [base]
+                        enabled = [color1, color2, result1, result2, result12]
+                        break;
+                    default:
+                        console.log('invalid mode')
+                }
+                disableInputs(disabled)
+                enableInputs(enabled)
+            }
+
+
+            $scope.calculateResults = function (input) {
+
+                console.log('calculating results')
+
+                let { base, color1, color2, opacity1, opacity2, result1, result2, result12, disabledInputs } = $scope
+
+                console.log(base, color1, color2, opacity1, opacity2, result1, result2, result12, disabledInputs)
+
+                if (input === 'base' || (input === 'color1' || input === 'color2')) {
                     $scope.result1 = colorBlender(base, color1, opacity1)
                     $scope.result2 = colorBlender(base, color2, opacity2)
                     $scope.result12 = colorBlender($scope.result2, color1, opacity1)
-                    console.log($scope.result1, $scope.result12, $scope.result2)
                 }
 
-                $scope.calculateColor = function () {
-                    let { base, opacity1, opacity2, opacity3, result1, result12, result2 } = $scope
-                    $scope.color1 = colorFinder(result1, base, opacity1)
-                    $scope.color2 = colorFinder(result2, base, opacity2)
-                    $scope.result12 = colorBlender($scope.result2, color1, opacity1)
-                }
-
-
-
-                $scope.selectResult = function (number) {
-                    if ($scope.selection.includes(number)) $scope.selection = $scope.selection.filter(n => n !== number)
-                    else $scope.selection.push(number)
-                    if ($scope.selection.length >= 2) {
-                        let oldNumber = $scope.selection.shift()
-                        let oldElement = document.getElementById(`result${oldNumber}`)
-                        let oldColor = oldElement.children[0]
-                        let oldText = oldElement.children[1]
-                        if (oldColor.disabled === false || oldText.disabled === false) {
-                            console.log('setting disabled = true ', number)
-                            oldColor.setAttribute('disabled', true)
-                            oldText.setAttribute('disabled', true)
-                        }
-                        else {
-                            console.log('removing disabled ', number)
-                            oldColor.removeAttribute('disabled')
-                            oldText.removeAttribute('disabled')
-                        }
-                    }
-
-                    let element = document.getElementById(`result${number}`)
-                    let color = element.children[0]
-                    let text = element.children[1]
-                    if (color.disabled === false || text.disabled === false) {
-                        console.log('setting disabled = true ', number)
-                        color.setAttribute('disabled', true)
-                        text.setAttribute('disabled', true)
+                if (input === 'result1') {
+                    if (disabledInputs.includes('base')) {
+                        $scope.base = baseFinder(result1, color1, opacity1)
                     }
                     else {
-                        console.log('removing disabled ', number)
-                        color.removeAttribute('disabled')
-                        text.removeAttribute('disabled')
+                        $scope.color1 = colorFinder(result1, base, opacity1)
                     }
                 }
 
-
-
-
-
-
-
-
-
-
-
-                function colorToArray(color) {
-                    color = color.trim()
-                    if (color[0] === '#') {
-                        color = color.slice(1)
-                        if (color.length === 3) {
-                            color = color.split('').map(c => c.repeat(2))
-                        }
-                        else if (color.length === 6) {
-                            color = [color.slice(0, 2), color.slice(2, 4), color.slice(4, 6)]
-                        }
-                        else return 'Hexadecimal colors must contain 3 or 6 digits'
-
-                        let hexadecimal = {
-                            0: 0,
-                            1: 1,
-                            2: 2,
-                            3: 3,
-                            4: 4,
-                            5: 5,
-                            6: 6,
-                            7: 7,
-                            8: 8,
-                            9: 9,
-                            a: 10,
-                            b: 11,
-                            c: 12,
-                            d: 13,
-                            e: 14,
-                            f: 15
-                        }
-
-                        color = color.map(c => {
-                            c = c.toLowerCase()
-                            return hexadecimal[c[0]] * 16 + hexadecimal[c[1]]
-                        })
-
+                if (input === 'result2') {
+                    if (disabledInputs.includes('base')) {
+                        $scope.base = baseFinder(result2, color2, opacity2)
                     }
-                    else if (color[0] === 'r') {
-                        color = color.slice(color.indexOf('(') + 1, color.length - 1).split(',').map(c => parseInt(c.trim(), 10))
+                    else {
+                        $scope.color2 = colorFinder(result2, base, opacity2)
                     }
-                    else return 'Must input hexadecimal or rgb color'
-                    return color
                 }
 
-
-
-                function arrayToColor(color) {
-                    if (color.length === 4) return `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3]})`
-                    if (color.length === 3) return `rgb(${color[0]}, ${color[1]}, ${color[2]})`
+                if (input === 'result12') {
+                    if (disabledInputs.includes('color1')) {
+                        $scope.color1 = colorFinder(result12, result2, opacity1)
+                    }
+                    if (disabledInputs.includes('color2')) {
+                        $scope.color2 = colorFinder(result12, result1, opacity2)
+                    }
+                    if (disabledInputs.includes('base')) {
+                        $scope.base = baseFinder()
+                    }
                 }
 
+                console.log($scope.result1, $scope.result12, $scope.result2)
+            }
 
-                function rgbToHexadecimal(color) {
-                    if (!Array.isArray(color)) color = colorToArray(color)
+
+
+
+
+            function colorToArray(color) {
+                color = color.trim()
+                if (color[0] === '#') {
+                    color = color.slice(1)
+                    if (color.length === 3) {
+                        color = color.split('').map(c => c.repeat(2))
+                    }
+                    else if (color.length === 6) {
+                        color = [color.slice(0, 2), color.slice(2, 4), color.slice(4, 6)]
+                    }
+                    else return 'Hexadecimal colors must contain 3 or 6 digits'
+
                     let hexadecimal = {
                         0: 0,
                         1: 1,
@@ -370,114 +648,155 @@ input {
                         7: 7,
                         8: 8,
                         9: 9,
-                        10: 'A',
-                        11: 'B',
-                        12: 'C',
-                        13: 'D',
-                        14: 'E',
-                        15: 'F'
+                        a: 10,
+                        b: 11,
+                        c: 12,
+                        d: 13,
+                        e: 14,
+                        f: 15
                     }
 
-                    let toHex = c => {
-                        if (c % 16 === 0) return `${hexadecimal[c / 16]}0`
-                        else return `${hexadecimal[Math.floor(c / 16)]}${hexadecimal[c % 16]}`
-                    }
-
-                    let r = toHex(color[0])
-                    let g = toHex(color[1])
-                    let b = toHex(color[2])
-
-                    return `#${r}${g}${b}`
+                    color = color.map(c => {
+                        c = c.toLowerCase()
+                        return hexadecimal[c[0]] * 16 + hexadecimal[c[1]]
+                    })
 
                 }
+                else if (color[0] === 'r') {
+                    color = color.slice(color.indexOf('(') + 1, color.length - 1).split(',').map(c => parseInt(c.trim(), 10))
+                }
+                else return 'Must input hexadecimal or rgb color'
+                return color
+            }
 
 
-                function colorBlender(base, color, opacity) {
 
-                    if (!Array.isArray(base)) base = colorToArray(base)
-                    if (!Array.isArray(color)) color = colorToArray(color)
-
-                    console.log(base, color, opacity)
-
-                    if (base[3] !== undefined && base[3] !== 1) return 'Base color must be opaque. If using rgba(), specify \'1\' as the alpha value'
-                    if (opacity !== undefined && color[3] !== undefined) return 'Define transparency either through using rgba() or specifying the opacity parameter, not both'
-                    if (!opacity && opacity !== 0) opacity = color[3]
-                    if (opacity <= 0 || color[3] <= 0) return 'Opacity/alpha must be greater than zero'
-                    if (!opacity) return 'Must specify opacity'
-                    if (opacity >= 1) return 'Opacity/alpha must be less than one'
+            function arrayToColor(color) {
+                if (color.length === 4) return `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3]})`
+                if (color.length === 3) return `rgb(${color[0]}, ${color[1]}, ${color[2]})`
+            }
 
 
-                    let blend = c => (base[c] * (1 - opacity) + color[c] * opacity).toFixed(0)
-
-                    let r = blend(0)
-                    let g = blend(1)
-                    let b = blend(2)
-
-                    let result = [r, g, b]
-
-                    return rgbToHexadecimal(result)
-
+            function rgbToHexadecimal(color) {
+                if (!Array.isArray(color)) color = colorToArray(color)
+                let hexadecimal = {
+                    0: 0,
+                    1: 1,
+                    2: 2,
+                    3: 3,
+                    4: 4,
+                    5: 5,
+                    6: 6,
+                    7: 7,
+                    8: 8,
+                    9: 9,
+                    10: 'A',
+                    11: 'B',
+                    12: 'C',
+                    13: 'D',
+                    14: 'E',
+                    15: 'F'
                 }
 
-
-
-                function colorFinder(result, base, opacity) {
-
-                    if (!Array.isArray(base)) base = colorToArray(base)
-                    if (!Array.isArray(result)) result = colorToArray(result)
-
-                    if (opacity <= 0) return 'Opacity must be greater than zero'
-                    if (!opacity) return 'Must specify opacity'
-                    if (opacity >= 1) return 'Opacity must be less than one'
-
-                    console.log(result, base, opacity)
-
-                    let unblend = c => ((result[c] - (base[c] * (1 - opacity))) / opacity).toFixed(0)
-
-                    let r = unblend(0)
-                    let g = unblend(1)
-                    let b = unblend(2)
-
-                    let color = [r, g, b, opacity]
-
-                    if (color.reduce((a, b) => a || (b < 0 || b > 255), false)) return 'Result not possible with given base & opacity'
-
-                    return rgbToHexadecimal(color)
-
+                let toHex = c => {
+                    if (c % 16 === 0) return `${hexadecimal[c / 16]}0`
+                    else return `${hexadecimal[Math.floor(c / 16)]}${hexadecimal[c % 16]}`
                 }
 
+                let r = toHex(color[0])
+                let g = toHex(color[1])
+                let b = toHex(color[2])
+
+                return `#${r}${g}${b}`
+
+            }
 
 
-                function baseFinder(result, color, opacity) {
 
-                    if (!Array.isArray(result)) result = colorToArray(result)
-                    if (!Array.isArray(color)) color = colorToArray(color)
 
-                    if (opacity !== undefined && color[3] !== undefined) return 'Define transparency either through using rgba() or specifying the opacity parameter, not both'
-                    if (!opacity && opacity !== 0) opacity = color[3]
-                    if (opacity <= 0 || color[3] <= 0) return 'Opacity/alpha must be greater than zero'
-                    if (!opacity) return 'Must specify opacity'
-                    if (opacity >= 1) return 'Opacity/alpha must be less than one'
 
-                    console.log(result, color, opacity)
+            function colorBlender(base, color, opacity) {
 
-                    let unblend = c => (result[c] - (color[c] * opacity) / (1 - opacity)).toFixed(0)
+                if (!Array.isArray(base)) base = colorToArray(base)
+                if (!Array.isArray(color)) color = colorToArray(color)
 
-                    let r = unblend(0)
-                    let g = unblend(1)
-                    let b = unblend(2)
+                console.log(base, color, opacity)
 
-                    let base = [r, g, b]
+                if (base[3] !== undefined && base[3] !== 1) return 'Base color must be opaque. If using rgba(), specify \'1\' as the alpha value'
+                if (opacity !== undefined && color[3] !== undefined) return 'Define transparency either through using rgba() or specifying the opacity parameter, not both'
+                if (!opacity && opacity !== 0) opacity = color[3]
+                if (opacity <= 0 || color[3] <= 0) return 'Opacity/alpha must be greater than zero'
+                if (!opacity) return 'Must specify opacity'
+                if (opacity >= 1) return 'Opacity/alpha must be less than one'
 
-                    if (base.reduce((a, b) => a || (b < 0 || b > 255), false)) return 'Result not possible with given color & opacity'
 
-                    return rgbToHexadecimal(base)
+                let blend = c => (base[c] * (1 - opacity) + color[c] * opacity).toFixed(0)
 
-                }
+                let r = blend(0)
+                let g = blend(1)
+                let b = blend(2)
 
-            })
+                let result = [r, g, b]
 
-        
+                return rgbToHexadecimal(result)
+
+            }
+
+            function colorFinder(result, base, opacity) {
+
+                if (!Array.isArray(base)) base = colorToArray(base)
+                if (!Array.isArray(result)) result = colorToArray(result)
+
+                if (opacity <= 0) return 'Opacity must be greater than zero'
+                if (!opacity) return 'Must specify opacity'
+                if (opacity >= 1) return 'Opacity must be less than one'
+
+                console.log(result, base, opacity)
+
+                let unblend = c => ((result[c] - (base[c] * (1 - opacity))) / opacity).toFixed(0)
+
+                let r = unblend(0)
+                let g = unblend(1)
+                let b = unblend(2)
+
+                let color = [r, g, b, opacity]
+
+                if (color.reduce((a, b) => a || (b < 0 || b > 255), false)) return 'Result not possible with given base & opacity'
+
+                return rgbToHexadecimal(color)
+
+            }
+
+            function baseFinder(result, color, opacity) {
+
+                if (!Array.isArray(result)) result = colorToArray(result)
+                if (!Array.isArray(color)) color = colorToArray(color)
+
+                if (opacity !== undefined && color[3] !== undefined) return 'Define transparency either through using rgba() or specifying the opacity parameter, not both'
+                if (!opacity && opacity !== 0) opacity = color[3]
+                if (opacity <= 0 || color[3] <= 0) return 'Opacity/alpha must be greater than zero'
+                if (!opacity) return 'Must specify opacity'
+                if (opacity >= 1) return 'Opacity/alpha must be less than one'
+
+                console.log(result, color, opacity)
+
+                let unblend = c => (result[c] - (color[c] * opacity) / (1 - opacity)).toFixed(0)
+
+                let r = unblend(0)
+                let g = unblend(1)
+                let b = unblend(2)
+
+                let base = [r, g, b]
+
+                if (base.reduce((a, b) => a || (b < 0 || b > 255), false)) return 'Result not possible with given color & opacity'
+
+                return rgbToHexadecimal(base)
+
+            }
+
+        })
+
+
 
     </script>
 
