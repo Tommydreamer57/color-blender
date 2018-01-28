@@ -2,15 +2,83 @@ angular.module('colorBlender', [])
 
 angular.module('colorBlender').controller('colorCtrl', function ($scope) {
 
-    $scope.selection = []
-    
-    $scope.calculateResults = function () {
-        let { base, color1, color2, color3, opacity1, opacity2, opacity3 } = $scope
+    $scope.toggleLeft = function () {
+        if ($scope.leftIn) $scope.leftIn = false
+        else $scope.leftIn = true
+    }
+
+    $scope.toggleRight = function () {
+        if ($scope.rightIn) $scope.rightIn = false
+        else $scope.rightIn = true
+    }
+
+    $scope.closeLeftAndRight = function () {
+        $scope.rightIn = false
+        $scope.leftIn = false
+    }
+
+
+
+    function toggleDisableInputs(parent) {
+        let color = document.getElementById(parent).children[0]
+        let text = document.getElementById(parent).children[1]
+        if (color.disabled === false || text.disabled === false) {
+            color.setAttribute('disabled', true)
+            text.setAttribute('disabled', true)
+        }
+        else {
+            color.removeAttribute('disabled')
+            text.removeAttribute('disabled')
+        }
+    }
+
+
+
+    $scope.modes = {
+        freePlay: "free play", // input whatever and see results cannot edit result12
+        findBase: "find base", // input color1 & 2 & result 1 & 2 cannot edit result12
+        findColor1: "find color one", // can edit anything
+        findColor2: "find color two", // can edit anything
+    }
+
+    $scope.selectMode = function (mode) {
+        let { freePlay, findBase, findColor1, findColor2 } = $scope.modes
+        let { base, color1, color2, color3, opacity1, opacity2, opacity3, result1, result2, result12 } = $scope
+        switch (mode) {
+            case freePlay:
+
+                break;
+            case findBase:
+
+                break;
+            case findColor1:
+
+                break;
+            case findColor2:
+
+                break;
+            default:
+                console.log('invalid mode')
+        }
+    }
+
+    $scope.calculateResults = function (input) {
         console.log('calculating results')
-        console.log(opacity1, opacity2)
-        $scope.result1 = colorBlender(base, color1, opacity1)
-        $scope.result2 = colorBlender(base, color2, opacity2)
-        $scope.result12 = colorBlender($scope.result2, color1, opacity1)
+        switch (input) {
+            case 'base':
+                $scope.result1 = colorBlender(base, color1, opacity1)
+                $scope.result2 = colorBlender(base, color2, opacity2)
+                $scope.result12 = colorBlender(result2, $scope.result1, opacity1)
+            case 'color1':
+                $scope.result1 = colorBlender(base, color1, opacity1)
+                $scope.result12 = colorBlender(result2, $scope.result1, opacity1)
+            case 'color2':
+                $scope.result2 = colorBlender(base, color2, opacity2)
+                $scope.result12 = colorBlender($scope.result2, color1, opacity1)
+            case 'result1':
+            case 'result2':
+            case 'result12':
+        }
         console.log($scope.result1, $scope.result12, $scope.result2)
     }
 
@@ -21,46 +89,10 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
         $scope.result12 = colorBlender(result2, $scope.color1, opacity1)
     }
 
-    
+    $scope.calculateBase = function () {
+        let { color1, color2, color3, opacity1, opacity2, opacity3, result1, result12, result2 } = $scope
 
-    $scope.selectResult = function (number) {
-        if ($scope.selection.includes(number)) $scope.selection = $scope.selection.filter(n => n !== number)
-        else $scope.selection.push(number)
-        if ($scope.selection.length >= 2) {
-            let oldNumber = $scope.selection.shift()
-            let oldElement = document.getElementById(`result${oldNumber}`)
-            let oldColor = oldElement.children[0]
-            let oldText = oldElement.children[1]
-            if (oldColor.disabled === false || oldText.disabled === false) {
-                console.log('setting disabled = true ', number)
-                oldColor.setAttribute('disabled', true)
-                oldText.setAttribute('disabled', true)
-            }
-            else {
-                console.log('removing disabled ', number)
-                oldColor.removeAttribute('disabled')
-                oldText.removeAttribute('disabled')
-            }
-        }
-            
-        let element = document.getElementById(`result${number}`)
-        let color = element.children[0]
-        let text = element.children[1]
-        if (color.disabled === false || text.disabled === false) {
-            console.log('setting disabled = true ', number)
-            color.setAttribute('disabled', true)
-            text.setAttribute('disabled', true)
-        }
-        else {
-            console.log('removing disabled ', number)
-            color.removeAttribute('disabled')
-            text.removeAttribute('disabled')
-        }
     }
-
-
-
-
 
 
 
@@ -154,12 +186,15 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
 
     }
 
-    
+
+
+
+
     function colorBlender(base, color, opacity) {
-        
+
         if (!Array.isArray(base)) base = colorToArray(base)
         if (!Array.isArray(color)) color = colorToArray(color)
-        
+
         console.log(base, color, opacity)
 
         if (base[3] !== undefined && base[3] !== 1) return 'Base color must be opaque. If using rgba(), specify \'1\' as the alpha value'
@@ -181,8 +216,6 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
         return rgbToHexadecimal(result)
 
     }
-
-
 
     function colorFinder(result, base, opacity) {
 
@@ -208,8 +241,6 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
         return rgbToHexadecimal(color)
 
     }
-
-
 
     function baseFinder(result, color, opacity) {
 

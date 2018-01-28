@@ -1,14 +1,11 @@
+
 html, body {
     margin: 0;
     padding: 0;
 }
 
-*, input {
-    font-family: calibri;
-}
-
-#view {
-
+* {
+    font-family: Calibri, Segoe UI, Segoe,  Optima, Arial, sans-serif;
 }
 
 #input-box {
@@ -64,14 +61,36 @@ input {
     width: 40vw;
     background: #222222;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
+#display-box > div {
+    box-sizing: border-box;
+}
+
+#mode {
+    background: #444;
+    height: 7.5%;
+    width: 80%;
+    padding: 0.5rem;
+    margin-bottom: 5%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#mode > div {
+    background: black;
+    height: 100%;
+    width: 2rem;
+}
+
 #display {
-    width: 75%;
-    height: 85%;
-    border: 5px solid white;
+    height: 80%;
+    width: 80%;
+    /* border: 5px solid white; */
     position: relative;
     /* display: flex;
     flex-flow: column wrap;
@@ -106,6 +125,34 @@ input {
 }
 */
 
+.display-label {
+    position: absolute;
+    left: 25%;
+    right: 25%;
+    width: 50%;
+    font-size: 1rem;
+    text-align: center;
+    z-index: 4;
+}
+
+#base-label {
+    bottom: 2.5%;
+    left: 5%;
+    text-align: left;
+}
+
+#color1-label {
+    top:25%;
+}
+
+#color12-label {
+    top: calc(50% - 0.5rem);
+}
+
+#color2-label {
+    bottom: 25%;
+}
+
 #results-box {
     position: fixed;
     bottom: 0;
@@ -117,4 +164,71 @@ input {
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+}
+
+
+
+.header {
+    position: fixed;
+    top: 0;
+    width: calc(30vw - 1rem);
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    font-size: 1.125rem;    
+}
+
+#left-header {
+    left: 0;
+    justify-content: flex-start;
+}
+
+#right-header {
+    right: 0;
+    justify-content: flex-end;
+}
+
+button {
+    border: none;
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    font-size: 1.125rem;
+}
+
+#cover {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,0.1);
+    opacity: transparent;
+}
+
+.slide {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    height: 100vh;
+    width: 30vw;
+    background: #444;
+    transition: left 0.4s ease, right 0.4s ease;
+}
+
+#left-slide-in {
+    left: 0;
+}
+
+#left-slide-out {
+    left: -30vw;
+}
+
+#right-slide-in {
+    right: 0;
+}
+
+#right-slide-out {
+    right: -30vw;
 }
