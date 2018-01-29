@@ -88,7 +88,7 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
                 break;
             case 4: // find color 2
                 disabled = [color2]
-                enabled = [base, color1, ]
+                enabled = [base, color1,]
                 break;
             case 5: // find base
                 disabled = [base]
@@ -103,7 +103,7 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
 
 
     $scope.calculateResults = function (input) {
-        
+
         console.log('calculating results')
 
         let { base, color1, color2, opacity1, opacity2, result1, result2, result12, disabledInputs } = $scope
@@ -123,6 +123,7 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
             else {
                 $scope.color1 = colorFinder(result1, base, opacity1)
             }
+            $scope.result12 = colorBlender(result2, $scope.color1, opacity1)
         }
 
         if (input === 'result2') {
@@ -132,6 +133,7 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
             else {
                 $scope.color2 = colorFinder(result2, base, opacity2)
             }
+            $scope.result12 = colorBlender(result2, color1, opacity1)
         }
 
         if (input === 'result12') {
@@ -142,7 +144,7 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
                 $scope.color2 = colorFinder(result12, result1, opacity2)
             }
             if (disabledInputs.includes('base')) {
-                $scope.base = baseFinder()
+                $scope.base = doubleBaseFinder(result12, color1, opacity1, color2, opacity2)
             }
         }
 
@@ -235,6 +237,9 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
         let g = toHex(color[1])
         let b = toHex(color[2])
 
+        console.log(color)
+        console.log(r, g, b)
+
         return `#${r}${g}${b}`
 
     }
@@ -250,12 +255,12 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
 
         console.log(base, color, opacity)
 
-        if (base[3] !== undefined && base[3] !== 1) return 'Base color must be opaque. If using rgba(), specify \'1\' as the alpha value'
-        if (opacity !== undefined && color[3] !== undefined) return 'Define transparency either through using rgba() or specifying the opacity parameter, not both'
+        if (base[3] !== undefined && base[3] !== 1) console.log('Base color must be opaque. If using rgba(), specify \'1\' as the alpha value')
+        if (opacity !== undefined && color[3] !== undefined) console.log('Define transparency either through using rgba() or specifying the opacity parameter, not both')
         if (!opacity && opacity !== 0) opacity = color[3]
-        if (opacity <= 0 || color[3] <= 0) return 'Opacity/alpha must be greater than zero'
-        if (!opacity) return 'Must specify opacity'
-        if (opacity >= 1) return 'Opacity/alpha must be less than one'
+        if (opacity <= 0 || color[3] <= 0) console.log('Opacity/alpha must be greater than zero')
+        if (!opacity) console.log('Must specify opacity')
+        if (opacity >= 1) console.log('Opacity/alpha must be less than one')
 
 
         let blend = c => (base[c] * (1 - opacity) + color[c] * opacity).toFixed(0)
@@ -275,9 +280,9 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
         if (!Array.isArray(base)) base = colorToArray(base)
         if (!Array.isArray(result)) result = colorToArray(result)
 
-        if (opacity <= 0) return 'Opacity must be greater than zero'
-        if (!opacity) return 'Must specify opacity'
-        if (opacity >= 1) return 'Opacity must be less than one'
+        if (opacity <= 0) console.log('Opacity must be greater than zero')
+        if (!opacity) console.log('Must specify opacity')
+        if (opacity >= 1) console.log('Opacity must be less than one')
 
         console.log(result, base, opacity)
 
@@ -289,7 +294,7 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
 
         let color = [r, g, b, opacity]
 
-        if (color.reduce((a, b) => a || (b < 0 || b > 255), false)) return 'Result not possible with given base & opacity'
+        if (color.reduce((a, b) => a || (b < 0 || b > 255), false)) console.log('Result not possible with given base & opacity')
 
         return rgbToHexadecimal(color)
 
@@ -297,18 +302,20 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
 
     function baseFinder(result, color, opacity) {
 
+        console.log(result, color, opacity)
+
         if (!Array.isArray(result)) result = colorToArray(result)
         if (!Array.isArray(color)) color = colorToArray(color)
 
-        if (opacity !== undefined && color[3] !== undefined) return 'Define transparency either through using rgba() or specifying the opacity parameter, not both'
+        if (opacity !== undefined && color[3] !== undefined) console.log('Define transparency either through using rgba() or specifying the opacity parameter, not both')
         if (!opacity && opacity !== 0) opacity = color[3]
-        if (opacity <= 0 || color[3] <= 0) return 'Opacity/alpha must be greater than zero'
-        if (!opacity) return 'Must specify opacity'
-        if (opacity >= 1) return 'Opacity/alpha must be less than one'
+        if (opacity <= 0 || color[3] <= 0) console.log('Opacity/alpha must be greater than zero')
+        if (!opacity) console.log('Must specify opacity')
+        if (opacity >= 1) console.log('Opacity/alpha must be less than one')
 
         console.log(result, color, opacity)
 
-        let unblend = c => (result[c] - (color[c] * opacity) / (1 - opacity)).toFixed(0)
+        let unblend = c => ((result[c] - (color[c] * opacity)) / (1 - opacity)).toFixed(0)
 
         let r = unblend(0)
         let g = unblend(1)
@@ -316,9 +323,39 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
 
         let base = [r, g, b]
 
-        if (base.reduce((a, b) => a || (b < 0 || b > 255), false)) return 'Result not possible with given color & opacity'
+        console.log(base)
+
+        if (base.reduce((a, b) => a || (b < 0 || b > 255), false)) console.log('Result not possible with given color & opacity')
 
         return rgbToHexadecimal(base)
+
+    }
+
+    function doubleBaseFinder(result, color1, opacity1, color2, opacity2) {
+
+        console.log(result, color1, opacity1, color2, opacity2)
+
+        if (!Array.isArray(result)) result = colorToArray(result)
+        if (!Array.isArray(color1)) color1 = colorToArray(color1)
+        if (!Array.isArray(color2)) color2 = colorToArray(color2)
+
+        // colors should be layered from bottom to top: base \ color2 \ color1
+
+        let blend = c => ((color2[c] * opacity2 * (1 - opacity1)) + color1[c] * opacity1).toFixed(0)
+
+        let r = blend(0)
+        let g = blend(1)
+        let b = blend(2)
+
+        let color = [r, g, b]
+
+        console.log(color)
+        
+        let opacity = 1 - ((1 - opacity1) * (1 - opacity2))
+        
+        console.log(color, opacity)
+
+        return baseFinder(result, color, opacity)
 
     }
 
