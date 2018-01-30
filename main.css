@@ -40,6 +40,7 @@ html, body {
     display: flex;
     margin: 2.5px 0;
     justify-content: space-between;
+    box-sizing: border-box;
 }
 
 input {
@@ -48,9 +49,8 @@ input {
 }
 
 .disabled {
-    border: 2px solid black;
-    background: #3B3B3B;
-    /* #282828; */
+    border: 2px solid #222;
+    background: #282828;
 }
 
 #display-box {
@@ -70,7 +70,7 @@ input {
     box-sizing: border-box;
 }
 
-#mode {
+#mode-wrapper {
     background: #444;
     height: 7.5%;
     width: 80%;
@@ -81,7 +81,8 @@ input {
     align-items: center;
 }
 
-#mode > div {
+#mode-wrapper > div {
+    border: 0.5px solid rgba(0, 255, 255, 0);
     background: black;
     height: 100%;
     width: 2rem;
@@ -89,6 +90,12 @@ input {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    transition: opacity 0.05s;
+}
+
+#mode-wrapper .selected-mode {
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    opacity: 0.33;
 }
 
 #mode-1 > div {
@@ -143,11 +150,6 @@ input {
     width: 75%;
     height: 75%;
     opacity: 0.75;
-}
-
-.selected-mode {
-    border: 1px solid rgba(0, 255, 255, 0.5);
-    opacity: 0.33;
 }
 
 #display {

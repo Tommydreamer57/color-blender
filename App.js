@@ -110,42 +110,45 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
 
         console.log(base, color1, color2, opacity1, opacity2, result1, result2, result12, disabledInputs)
 
-        if (input === 'base' || (input === 'color1' || input === 'color2')) {
-            $scope.result1 = colorBlender(base, color1, opacity1)
-            $scope.result2 = colorBlender(base, color2, opacity2)
-            $scope.result12 = colorBlender($scope.result2, color1, opacity1)
-        }
+        switch (input) {
+            case 'base':
+            case 'color1':
+            case 'color2':
+                $scope.result1 = colorBlender(base, color1, opacity1)
+                $scope.result2 = colorBlender(base, color2, opacity2)
+                $scope.result12 = colorBlender($scope.result2, color1, opacity1)
+                break;
+            case 'result1':
+                if (disabledInputs.includes('base')) {
+                    $scope.base = baseFinder(result1, color1, opacity1)
+                }
+                else {
+                    $scope.color1 = colorFinder(result1, base, opacity1)
+                }
+                $scope.result12 = colorBlender(result2, $scope.color1, opacity1)
+                break;
+            case 'result2':
+                if (disabledInputs.includes('base')) {
+                    $scope.base = baseFinder(result2, color2, opacity2)
+                }
+                else {
+                    $scope.color2 = colorFinder(result2, base, opacity2)
+                }
+                $scope.result12 = colorBlender(result2, color1, opacity1)
+                break;
+            case 'result12':
+                if (disabledInputs.includes('color1')) {
+                    $scope.color1 = colorFinder(result12, result2, opacity1)
+                }
+                if (disabledInputs.includes('color2')) {
+                    $scope.color2 = colorFinder(result12, result1, opacity2)
+                }
+                if (disabledInputs.includes('base')) {
+                    // $scope.base = doubleBaseFinder(result12, color1, opacity1, color2, opacity2)
+                    $scope.result2 = baseFinder(result12, color1, opacity1)
+                    $scope.base = baseFinder($scope.result2, color2, opacity2)
+                }
 
-        if (input === 'result1') {
-            if (disabledInputs.includes('base')) {
-                $scope.base = baseFinder(result1, color1, opacity1)
-            }
-            else {
-                $scope.color1 = colorFinder(result1, base, opacity1)
-            }
-            $scope.result12 = colorBlender(result2, $scope.color1, opacity1)
-        }
-
-        if (input === 'result2') {
-            if (disabledInputs.includes('base')) {
-                $scope.base = baseFinder(result2, color2, opacity2)
-            }
-            else {
-                $scope.color2 = colorFinder(result2, base, opacity2)
-            }
-            $scope.result12 = colorBlender(result2, color1, opacity1)
-        }
-
-        if (input === 'result12') {
-            if (disabledInputs.includes('color1')) {
-                $scope.color1 = colorFinder(result12, result2, opacity1)
-            }
-            if (disabledInputs.includes('color2')) {
-                $scope.color2 = colorFinder(result12, result1, opacity2)
-            }
-            if (disabledInputs.includes('base')) {
-                $scope.base = doubleBaseFinder(result12, color1, opacity1, color2, opacity2)
-            }
         }
 
         console.log($scope.result1, $scope.result12, $scope.result2)
@@ -156,6 +159,7 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
 
 
     function colorToArray(color) {
+        console.log(color)
         color = color.trim()
         if (color[0] === '#') {
             color = color.slice(1)
@@ -350,9 +354,9 @@ angular.module('colorBlender').controller('colorCtrl', function ($scope) {
         let color = [r, g, b]
 
         console.log(color)
-        
+
         let opacity = 1 - ((1 - opacity1) * (1 - opacity2))
-        
+
         console.log(color, opacity)
 
         return baseFinder(result, color, opacity)
